@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<AssemblyName>SaferAccessors.Analysis.Tests</AssemblyName>
+		<EnableNUnitRunner>true</EnableNUnitRunner>
+		<NoWarn>$(NoWarn);CA2007;NU1903;EnableGenerateDocumentationFile</NoWarn>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>SaferAccessors.Analysis.Tests</RootNamespace>
+		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SaferAccessors\SaferAccessors.csproj" />
+		<ProjectReference Include="..\SaferAccessors.Analysis\SaferAccessors.Analysis.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing">
+			<NoWarn>NU1608</NoWarn>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp">
+			<NoWarn>NU1608</NoWarn>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.Common">
+			<NoWarn>NU1608</NoWarn>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Testing.Extensions.VSTestBridge" />
+		<PackageReference Include="Microsoft.Testing.Platform.MSBuild" />
+		<PackageReference Include="NuGet.Frameworks" />
+		<PackageReference Include="NUnit.Analyzers">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="NUnit" />
+		<PackageReference Include="NUnit3TestAdapter">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+</Project>

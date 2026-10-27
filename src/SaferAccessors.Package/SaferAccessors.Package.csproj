@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Description>A C# source generator to make Reflection faster and safer using unsafe accessors in an automated way</Description>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<PackageIcon>Icon.png</PackageIcon>
+		<PackageId>SaferAccessors</PackageId>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/JasonBock/SaferAccessors</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageReleaseNotes>A changelog is available at https://github.com/JasonBock/SaferAccessors/blob/main/changelog.md</PackageReleaseNotes>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageTags>C# .NET Reflection</PackageTags>
+		<PackageVersion>$(Version)</PackageVersion>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/jasonbock/SaferAccessors</RepositoryUrl>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\README.md" Pack="true" PackagePath="" />
+		<None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+		<None Include="..\Images\Icon.png" Pack="true" PackagePath="" Visible="false" />
+		<None
+			Include="../artifacts/bin/SaferAccessors/$(Configuration)/SaferAccessors.dll"
+			Pack="true"
+			PackagePath="analyzers/dotnet/cs"
+			Visible="false" />
+		<None
+			Include="../artifacts/bin/SaferAccessors.Analysis/$(Configuration)/SaferAccessors.Analysis.dll"
+			Pack="true"
+			PackagePath="analyzers/dotnet/cs"
+			Visible="false" />
+		<TfmSpecificPackageFile
+            Include="../artifacts/bin/SaferAccessors/$(Configuration)/SaferAccessors.dll"
+            Pack="true"
+            PackagePath="lib/$(TargetFramework)" />
+		<TfmSpecificPackageFile
+            Include="../artifacts/bin/SaferAccessors/$(Configuration)/SaferAccessors.xml"
+            Pack="true"
+            PackagePath="lib/$(TargetFramework)" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="../SaferAccessors.Analysis/SaferAccessors.Analysis.csproj" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="../SaferAccessors/SaferAccessors.csproj" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+</Project>

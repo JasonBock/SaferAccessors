@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<AssemblyName>SaferAccessors</AssemblyName>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<DebugType>embedded</DebugType>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);CS1591;RS1036</NoWarn>
+		<RootNamespace>SaferAccessors</RootNamespace>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
+</Project>
