@@ -6,14 +6,74 @@ namespace SaferAccessors.Analysis.Builders;
 
 internal static class FieldAccessorBuilder
 {
-	// TODO: We need to make sure the name is Pascal-cased ... maybe.
-	// That is, if the field is named "id", we want the accessor to be called "IdField".
-	// If the field starts with "_", then what? It's fine to have a method called "_IdField", though it looks weird.
-	internal static void Build(IndentedTextWriter indentWriter, FieldModel field) => 
-		indentWriter.WriteLines(
-			$$"""
-			[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
-			public static extern {{(field.IsReadOnly ? "ref " : string.Empty)}}int {{field.Name}}Field();
+	internal static void Build(IndentedTextWriter indentWriter, FieldModel field, ITypeReferenceModel type)
+	{
+		if (field.IsStatic)
+		{
+			if (field.IsReadOnly)
+			{
+				indentWriter.WriteLines(
+					$$"""
+					extension({{type.FullyQualifiedName}})
+					{
+						public static {{field.Type.FullyQualifiedName}} {{field.Name}}Field() =>
+							(null as {{field.Type.FullyQualifiedName}})!.{{field.Name}}FieldUnsafe();
+					}
+					
+					extension({{type.FullyQualifiedName}} self)
+					{
+						[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
+						private extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}FieldUnsafe();
+					}
 
-			""");
+					""");
+			}
+			else
+			{
+				indentWriter.WriteLines(
+					$$"""
+					extension({{type.FullyQualifiedName}})
+					{
+						[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
+						public static extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}Field();
+					}
+
+					""");
+			}
+		}
+		else
+		{
+			indentWriter.WriteLines(
+				$$"""
+				extension({{type.FullyQualifiedName}} self)
+				{
+				""");
+			indentWriter.Indent++;
+
+			if (field.IsReadOnly)
+			{
+				indentWriter.WriteLines(
+					$$"""
+					public {{field.Type.FullyQualifiedName}} {{field.Name}}Field() =>
+						self.{{field.Name}}FieldUnsafe();
+					
+					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
+					private extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}FieldUnsafe();
+
+					""");
+			}
+			else
+			{
+				indentWriter.WriteLines(
+					$$"""
+					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
+					public extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}Field();
+
+					""");
+			}
+
+			indentWriter.Indent--;
+			indentWriter.WriteLine("}");
+		}
+	}
 }

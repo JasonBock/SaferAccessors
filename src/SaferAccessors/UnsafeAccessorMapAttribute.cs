@@ -1,4 +1,6 @@
-﻿/// <summary>
+﻿namespace SaferAccessors;
+
+/// <summary>
 /// Used to specify a type to build unsafe accessors for.
 /// </summary>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]

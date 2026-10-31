@@ -35,25 +35,27 @@ internal sealed class AccessorBuilder
 				""");
 		}
 
-		// TODO: Do we want to allow the user to specify the visibility
+		// TODO:
+		// Do we want to allow the user to specify the visibility
 		// of the generated class, similar to what I do in Rocks?
+
+		// TODO:
+		// Need to be cautious about generation a type
+		// with a name that already exists in that namespace.
+		// Use the naming trick I did in Rocks to get around that.
 		indentWriter.WriteLines(
 			$$"""
-			public static class {{type.Name}}UnsafeAccessors
+			public static class {{type.Name}}Extensions
 			{
-				extension({{type.FullyQualifiedName}} self)
-				{
 			""");
 
-		indentWriter.Indent += 2;
+		indentWriter.Indent++;
 
 		foreach (var field in this.Model.Fields)
 		{
-			FieldAccessorBuilder.Build(indentWriter, field);
+			FieldAccessorBuilder.Build(indentWriter, field, type);
 		}
 
-		indentWriter.Indent--;
-		indentWriter.WriteLine("}");
 		indentWriter.Indent--;
 		indentWriter.WriteLine("}");
 

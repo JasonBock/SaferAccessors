@@ -24,7 +24,7 @@ internal sealed record AccessorMapModel
 
 		foreach (var field in type.GetMembers().OfType<IFieldSymbol>())
 		{
-			if (field.DeclaredAccessibility != Accessibility.Public)
+			if (field.CanBeReferencedByName && field.DeclaredAccessibility != Accessibility.Public)
 			{
 				fields.Add(new(field, typeReferenceModelContext));
 			}

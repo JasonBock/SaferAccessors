@@ -9,9 +9,11 @@ internal sealed record FieldModel
 		this.Name = field.Name;
 		this.Type = typeReferenceModelContext.CreateTypeReference(field.Type);
 		this.IsReadOnly = field.IsReadOnly;
+		this.IsStatic = field.IsStatic;
 	}
 
 	internal bool IsReadOnly { get; }
+	internal bool IsStatic { get; }
 	internal string Name { get; }
 	internal ITypeReferenceModel Type { get; }
 }
