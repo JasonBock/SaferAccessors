@@ -17,7 +17,7 @@ internal static class FieldAccessorBuilder
 					extension({{type.FullyQualifiedName}})
 					{
 						public static {{field.Type.FullyQualifiedName}} {{field.Name}}Field() =>
-							(null as {{field.Type.FullyQualifiedName}})!.{{field.Name}}FieldUnsafe();
+							(null as {{type.FullyQualifiedName}})!.{{field.Name}}FieldUnsafe();
 					}
 					
 					extension({{type.FullyQualifiedName}} self)

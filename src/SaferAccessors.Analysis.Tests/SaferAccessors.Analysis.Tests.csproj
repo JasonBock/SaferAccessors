@@ -23,17 +23,14 @@
 		<PackageReference Include="Microsoft.CodeAnalysis.Common">
 			<NoWarn>NU1608</NoWarn>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Testing.Extensions.VSTestBridge" />
-		<PackageReference Include="Microsoft.Testing.Platform.MSBuild" />
+		<Reference Include="$(PkgMicrosoft_CodeAnalysis_NetAnalyzers)\analyzers\dotnet\Microsoft.CodeAnalysis.NetAnalyzers.dll" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="NuGet.Frameworks" />
 		<PackageReference Include="NUnit.Analyzers">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="NUnit" />
-		<PackageReference Include="NUnit3TestAdapter">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
+		<PackageReference Include="NUnit3TestAdapter" />
 	</ItemGroup>
 </Project>
