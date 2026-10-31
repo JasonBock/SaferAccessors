@@ -1,0 +1,1 @@
+﻿[assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.FieldAccessorGeneratorTestTypes.TestWithEditableInstance))]
