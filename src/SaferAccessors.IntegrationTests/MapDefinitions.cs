@@ -1,1 +1,4 @@
 ﻿[assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.FieldAccessorGeneratorTestTypes.TestWithEditableInstance))]
+[assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.FieldAccessorGeneratorTestTypes.TestWithEditableStatic))]
+[assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.FieldAccessorGeneratorTestTypes.TestWithReadOnlyInstance))]
+[assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.FieldAccessorGeneratorTestTypes.TestWithReadOnlyStatic))]
