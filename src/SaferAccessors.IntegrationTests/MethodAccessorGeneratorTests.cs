@@ -18,7 +18,6 @@ internal static class MethodAccessorGeneratorTest
 	public static void InvokeInstance()
 	{
 		var test = new TestWithInstance();
-
 		Assert.That(test.GetValue("333"), Is.EqualTo(3));
 	}
 

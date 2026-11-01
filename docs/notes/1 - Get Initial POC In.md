@@ -122,13 +122,44 @@ public static class ContentUnsafeAccessors
 
 We expose an accessor that doesn't return by `ref`, and it forwards the call to the real accessor. This allows the user to read the field, but it can't be changed.
 
+Also, just figured out how to use this with a static class:
+
+```c#
+using System;
+using System.Runtime.CompilerServices;
+
+Console.WriteLine(Content.Calculate("333"));
+
+public static class Content
+{
+    private static int Calculate(string key) => key.Length;
+}
+
+public static class ContentExtensions
+{
+    extension(Content)
+    {
+        public static int Calculate(string key) =>
+            (null as object).Calculate(key);
+    }
+
+	extension([UnsafeAccessorType("Content")] object? self)
+	{
+		[UnsafeAccessor(UnsafeAccessorKind.StaticMethod, Name = "Calculate")]
+		private extern int Calculate(string key);
+	}    
+}
+```
+
+This is one of many cases where `[UnsafeAccessorType]` is needed.
+
 TODO:
 * DONE - With the static extension method redirect, it has to be done for both editable and readonly, because you have to pass `null` in as the first parameter for the `extern`
 * DONE - Should we only look for "speakable" members? For example, C# declares a managed backing field for auto properties, and we probably don't want to expose those.
 * DONE - All member access should only include those that have `CanBeReferencedByName` as `true`
 * DONE - Field accessors should be handled to honor the `readonly` characteristic
-* Inheritance - need to figure out how this actually works and what members we do, or do not, want to pull.
 * Static types are problematic with the indirect I'm trying to do with static members, because you can't do `(null as StaticType)!...`
+* Inheritance - need to figure out how this actually works and what members we do, or do not, want to pull.
 * How does this work with `struct`s? I think there are some subtle differences ... maybe.
 * Generics will need to be handled correct (type parameters on the extension type, method type parameters on the method, constraints defined, etc.)
 * `[UnsafeAccessorType]` - we're going to need to use at some point
