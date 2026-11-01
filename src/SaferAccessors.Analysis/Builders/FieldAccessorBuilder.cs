@@ -84,13 +84,13 @@ internal static class FieldAccessorBuilder
 
 			indentWriter.WriteLines(
 				$$"""
-			extension({{type.FullyQualifiedName}} self)
-			{
-				[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
-				private extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}Field();
-			}
+				extension({{type.FullyQualifiedName}} self)
+				{
+					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
+					private extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}Field();
+				}
 
-			""");
+				""");
 		}
 	}
 }

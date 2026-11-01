@@ -13,24 +13,33 @@ internal sealed record AccessorMapModel
 
 		// TODO: Should interfaces be excluded? They can have non-public DIMs.
 
-		// TODO: We may want to be more precise here with the members we process.
-		// For example, a type that has an internal method, and that type
-		// exists in an assembly that has [InternalsVisibleTo] for the current compilation,
-		// it can "see" it with no issue. So we wouldn't really need to generate
-		// an unsafe accessor for it.
+		// TODO: We only want members that are private
+		// or internal that we don't have [InternalsVisibleTo] access.
+		// Handling private for now, will need to come back to this.
 
-		// Get all the fields
+		// Get all the members
 		var fields = new List<FieldModel>();
+		var methods = new List<MethodModel>();
 
-		foreach (var field in type.GetMembers().OfType<IFieldSymbol>())
+		foreach (var member in type.GetMembers())
 		{
-			if (field.CanBeReferencedByName && field.DeclaredAccessibility != Accessibility.Public)
+			if (member is IFieldSymbol field)
 			{
-				fields.Add(new(field, typeReferenceModelContext));
+				if (field.CanBeReferencedByName && field.DeclaredAccessibility == Accessibility.Private)
+				{
+					fields.Add(new(field, typeReferenceModelContext));
+				}
+			}
+			else if (member is IMethodSymbol method)
+			{
+				if (method.CanBeReferencedByName && method.DeclaredAccessibility == Accessibility.Private)
+				{
+					methods.Add(new(method, typeReferenceModelContext));
+				}
 			}
 		}
 
-		return new(new AccessorModel(typeReferenceModelContext.CreateTypeReference(type), [.. fields]));
+		return new(new AccessorModel(typeReferenceModelContext.CreateTypeReference(type), [.. fields], [.. methods]));
 	}
 
 	internal AccessorModel Accessor { get; }

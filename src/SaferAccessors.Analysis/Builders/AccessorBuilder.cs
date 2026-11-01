@@ -51,6 +51,11 @@ internal sealed class AccessorBuilder
 
 		indentWriter.Indent++;
 
+		foreach (var method in this.Model.Methods)
+		{
+			MethodAccessorBuilder.Build(indentWriter, method, type);
+		}
+
 		foreach (var field in this.Model.Fields)
 		{
 			FieldAccessorBuilder.Build(indentWriter, field, type);

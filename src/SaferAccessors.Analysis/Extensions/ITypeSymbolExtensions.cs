@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using SaferAccessors.Analysis.Extensions;
 
 namespace SaferAccessors.Extensions;
 
@@ -55,5 +56,16 @@ internal static class ITypeSymbolExtensions
 
 			return symbolName;
 		}
+
+		internal bool IsOpenGeneric() =>
+			self switch
+			{
+				{ TypeKind: TypeKind.TypeParameter } => true,
+				INamedTypeSymbol namedType => namedType.HasOpenGenerics(),
+				_ => false
+			}; 
+			
+		internal bool IsPointer() =>
+			self.Kind == SymbolKind.PointerType || self.Kind == SymbolKind.FunctionPointerType;
 	}
 }
