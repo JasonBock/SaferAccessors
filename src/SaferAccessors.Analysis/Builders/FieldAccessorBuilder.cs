@@ -16,14 +16,10 @@ internal static class FieldAccessorBuilder
 					$$"""
 					extension({{type.FullyQualifiedName}})
 					{
-						public static {{field.Type.FullyQualifiedName}} {{field.Name}}Field() =>
-							(null as {{type.FullyQualifiedName}})!.{{field.Name}}FieldUnsafe();
-					}
-					
-					extension({{type.FullyQualifiedName}} self)
-					{
-						[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
-						private extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}FieldUnsafe();
+						public static {{field.Type.FullyQualifiedName}} {{field.Name}}
+						{
+							get => (null as {{type.FullyQualifiedName}})!.{{field.Name}}Field();
+						}
 					}
 
 					""");
@@ -34,31 +30,39 @@ internal static class FieldAccessorBuilder
 					$$"""
 					extension({{type.FullyQualifiedName}})
 					{
-						[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
-						public static extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}Field();
+						public static {{field.Type.FullyQualifiedName}} {{field.Name}}
+						{
+							get => (null as {{type.FullyQualifiedName}})!.{{field.Name}}Field();
+							set => (null as {{type.FullyQualifiedName}})!.{{field.Name}}Field() = value;
+						}
 					}
 
 					""");
 			}
-		}
-		else
-		{
+
 			indentWriter.WriteLines(
 				$$"""
 				extension({{type.FullyQualifiedName}} self)
 				{
-				""");
-			indentWriter.Indent++;
+					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticField, Name = "{{field.Name}}")]
+					private extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}Field();
+				}
 
+				""");
+		}
+		else
+		{
 			if (field.IsReadOnly)
 			{
 				indentWriter.WriteLines(
 					$$"""
-					public {{field.Type.FullyQualifiedName}} {{field.Name}}Field() =>
-						self.{{field.Name}}FieldUnsafe();
-					
-					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
-					private extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}FieldUnsafe();
+					extension({{type.FullyQualifiedName}} self)
+					{
+						public {{field.Type.FullyQualifiedName}} {{field.Name}}
+						{
+							get => self.{{field.Name}}Field();
+						}
+					}
 
 					""");
 			}
@@ -66,14 +70,27 @@ internal static class FieldAccessorBuilder
 			{
 				indentWriter.WriteLines(
 					$$"""
-					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
-					public extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}Field();
+					extension({{type.FullyQualifiedName}} self)
+					{
+						public {{field.Type.FullyQualifiedName}} {{field.Name}}
+						{
+							get => self.{{field.Name}}Field();
+							set => self.{{field.Name}}Field() = value;
+						}
+					}
 
 					""");
 			}
 
-			indentWriter.Indent--;
-			indentWriter.WriteLine("}");
+			indentWriter.WriteLines(
+				$$"""
+			extension({{type.FullyQualifiedName}} self)
+			{
+				[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
+				private extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}Field();
+			}
+
+			""");
 		}
 	}
 }

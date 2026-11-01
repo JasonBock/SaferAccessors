@@ -41,8 +41,10 @@ internal static class FieldAccessorGeneratorTest
 	[Test]
 	public static void RoundtripEditableInstance()
 	{
-		var test = new TestWithEditableInstance();
-		test.idField() = 22;
+		var test = new TestWithEditableInstance
+		{
+			id = 22
+		};
 		Assert.That(test.RetrieveId(), Is.EqualTo(22));
 	}
 
@@ -50,14 +52,14 @@ internal static class FieldAccessorGeneratorTest
 	public static void RoundtripReadOnlyInstance()
 	{
 		var test = new TestWithReadOnlyInstance();
-		Assert.That(test.idField(), Is.EqualTo(test.RetrieveId()));
+		Assert.That(test.id, Is.EqualTo(test.RetrieveId()));
 	}
 
 	[Test]
 	public static void RoundtripEditableStatic()
 	{
 		var test = new TestWithEditableStatic();
-		TestWithEditableStatic.idField() = 22;
+		TestWithEditableStatic.id = 22;
 		Assert.That(test.RetrieveId(), Is.EqualTo(22));
 	}
 
@@ -65,6 +67,6 @@ internal static class FieldAccessorGeneratorTest
 	public static void RoundtripReadOnlyStatic()
 	{
 		var test = new TestWithReadOnlyStatic();
-		Assert.That(TestWithReadOnlyStatic.idField(), Is.EqualTo(test.RetrieveId()));
+		Assert.That(TestWithReadOnlyStatic.id, Is.EqualTo(test.RetrieveId()));
 	}
 }
