@@ -6,7 +6,7 @@ namespace SaferAccessors.Analysis.Builders;
 
 internal static class MethodAccessorBuilder
 {
-	internal static void Build(IndentedTextWriter indentWriter, MethodModel method, ITypeReferenceModel type)
+	internal static void Build(IndentedTextWriter indentWriter, MethodModel method, ITypeReferenceModel type, ExtensionTargets extensionTargets)
 	{
 		var parameters = string.Join(", ", method.Parameters.Select(parameter => $"{parameter.Type.FullyQualifiedName} {parameter.Name}"));
 		var parameterNames = string.Join(", ", method.Parameters.Select(parameter => parameter.Name));
@@ -18,10 +18,10 @@ internal static class MethodAccessorBuilder
 				extension({{type.FullyQualifiedName}})
 				{
 					public static {{method.ReturnType.FullyQualifiedName}} {{method.Name}}({{parameters}}) =>
-						(null as {{type.FullyQualifiedName}})!.{{method.Name}}Method({{parameterNames}});
+						(null as {{extensionTargets.SelfTargeting}})!.{{method.Name}}Method({{parameterNames}});
 				}
 
-				extension({{type.FullyQualifiedName}} self)
+				extension({{extensionTargets.SelfReference}})
 				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticMethod, Name = "{{method.Name}}")]
 					private extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}Method({{parameters}});

@@ -12,6 +12,11 @@ public class TestWithStatic
 	private static int GetValue(string key) => key.Length;
 }
 
+public static class TestWithStaticDeclaredOnStaticType
+{
+	private static int GetValue(string key) => key.Length;
+}
+
 internal static class MethodAccessorGeneratorTest
 {
 	[Test]
@@ -24,4 +29,8 @@ internal static class MethodAccessorGeneratorTest
 	[Test]
 	public static void InvokeStatic() => 
 		Assert.That(TestWithStatic.GetValue("333"), Is.EqualTo(3));
+
+	[Test]
+	public static void InvokeStaticDeclaredOnStaticType() =>
+		Assert.That(TestWithStaticDeclaredOnStaticType.GetValue("333"), Is.EqualTo(3));
 }

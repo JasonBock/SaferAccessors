@@ -6,7 +6,7 @@ namespace SaferAccessors.Analysis.Builders;
 
 internal static class FieldAccessorBuilder
 {
-	internal static void Build(IndentedTextWriter indentWriter, FieldModel field, ITypeReferenceModel type)
+	internal static void Build(IndentedTextWriter indentWriter, FieldModel field, ITypeReferenceModel type, ExtensionTargets extensionTargets)
 	{
 		if (field.IsStatic)
 		{
@@ -18,7 +18,7 @@ internal static class FieldAccessorBuilder
 					{
 						public static {{field.Type.FullyQualifiedName}} {{field.Name}}
 						{
-							get => (null as {{type.FullyQualifiedName}})!.{{field.Name}}Field();
+							get => (null as {{extensionTargets.SelfTargeting}})!.{{field.Name}}Field();
 						}
 					}
 
@@ -32,8 +32,8 @@ internal static class FieldAccessorBuilder
 					{
 						public static {{field.Type.FullyQualifiedName}} {{field.Name}}
 						{
-							get => (null as {{type.FullyQualifiedName}})!.{{field.Name}}Field();
-							set => (null as {{type.FullyQualifiedName}})!.{{field.Name}}Field() = value;
+							get => (null as {{extensionTargets.SelfTargeting}})!.{{field.Name}}Field();
+							set => (null as {{extensionTargets.SelfTargeting}})!.{{field.Name}}Field() = value;
 						}
 					}
 
@@ -42,7 +42,7 @@ internal static class FieldAccessorBuilder
 
 			indentWriter.WriteLines(
 				$$"""
-				extension({{type.FullyQualifiedName}} self)
+				extension({{extensionTargets.SelfReference}})
 				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticField, Name = "{{field.Name}}")]
 					private extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}Field();

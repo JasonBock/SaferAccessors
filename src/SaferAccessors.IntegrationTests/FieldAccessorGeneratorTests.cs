@@ -25,6 +25,13 @@ public class TestWithEditableStatic
 	public int RetrieveId() => TestWithEditableStatic.id;
 }
 
+public static class TestWithEditableStaticDeclaredOnStaticType
+{
+	private static int id = 11;
+
+	public static int RetrieveId() => TestWithEditableStaticDeclaredOnStaticType.id;
+}
+
 public class TestWithReadOnlyStatic
 {
 #pragma warning disable CA1802 // Use literals where appropriate
@@ -32,6 +39,15 @@ public class TestWithReadOnlyStatic
 #pragma warning restore CA1802 // Use literals where appropriate
 
 	public int RetrieveId() => TestWithReadOnlyStatic.id;
+}
+
+public static class TestWithReadOnlyStaticDeclaredOnStaticType
+{
+#pragma warning disable CA1802 // Use literals where appropriate
+	private static readonly int id = 22;
+#pragma warning restore CA1802 // Use literals where appropriate
+
+	public static int RetrieveId() => TestWithReadOnlyStaticDeclaredOnStaticType.id;
 }
 
 #pragma warning restore CA1823 // Avoid unused private fields
@@ -64,9 +80,13 @@ internal static class FieldAccessorGeneratorTest
 	}
 
 	[Test]
-	public static void RoundtripReadOnlyStatic()
+	public static void RoundtripEditableStaticDeclaredOnStaticType()
 	{
-		var test = new TestWithReadOnlyStatic();
-		Assert.That(TestWithReadOnlyStatic.id, Is.EqualTo(test.RetrieveId()));
+		TestWithEditableStaticDeclaredOnStaticType.id = 22;
+		Assert.That(TestWithEditableStaticDeclaredOnStaticType.RetrieveId(), Is.EqualTo(22));
 	}
+
+	[Test]
+	public static void RoundtripReadOnlyStatic() => 
+		Assert.That(TestWithReadOnlyStaticDeclaredOnStaticType.id, Is.EqualTo(TestWithReadOnlyStaticDeclaredOnStaticType.RetrieveId()));
 }

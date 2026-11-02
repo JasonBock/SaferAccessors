@@ -41,6 +41,7 @@ internal sealed class TypeReferenceModelContext
 			this.Name = type.Name;
 			this.FullyQualifiedName = type.GetFullyQualifiedName(modelContext.SemanticModel.Compilation);
 			this.SymbolKind = type.Kind;
+			this.IsStatic = type.IsStatic;
 		}
 
 		public int CompareTo(ITypeReferenceModel other) =>
@@ -57,6 +58,7 @@ internal sealed class TypeReferenceModelContext
 		public override string ToString() => this.FullyQualifiedName;
 
 		public string FullyQualifiedName { get; }
+		public bool IsStatic { get; }
 		public string Name { get; }
 		public string? Namespace { get; }
 		public SymbolKind SymbolKind { get; }

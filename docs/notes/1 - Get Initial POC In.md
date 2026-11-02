@@ -140,13 +140,13 @@ public static class ContentExtensions
     extension(Content)
     {
         public static int Calculate(string key) =>
-            (null as object).Calculate(key);
+            (null as object)!.CalculateMethod(key);
     }
 
 	extension([UnsafeAccessorType("Content")] object? self)
 	{
 		[UnsafeAccessor(UnsafeAccessorKind.StaticMethod, Name = "Calculate")]
-		private extern int Calculate(string key);
+		private extern int CalculateMethod(string key);
 	}    
 }
 ```
