@@ -36,7 +36,7 @@ internal static class PropertyAccessorGeneratorTests
 					}
 				
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Method, Name = "get_Id")]
-					private extern ref int GetIdProperty();
+					private extern int GetIdProperty();
 					
 				}
 				

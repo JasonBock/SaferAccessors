@@ -160,6 +160,12 @@ Note: We can't do `init` properties, because of this:
 
 ```
 
+```
+    // SaferAccessors.Analysis\SaferAccessors.Analysis.SaferAccessorsGenerator\Test_Accessors.g.cs(11,16): error CS7036: There is no argument given that corresponds to the required parameter 'value' of 'TestExtensions.extension(Test).SetIdProperty(int)'
+    DiagnosticResult.CompilerError("CS7036").WithSpan("SaferAccessors.Analysis\SaferAccessors.Analysis.SaferAccessorsGenerator\Test_Accessors.g.cs", 11, 16, 11, 29).WithArguments("value", "TestExtensions.extension(Test).SetIdProperty(int)"),
+
+```
+
 TODO:
 * DONE - With the static extension method redirect, it has to be done for both editable and readonly, because you have to pass `null` in as the first parameter for the `extern`
 * DONE - Should we only look for "speakable" members? For example, C# declares a managed backing field for auto properties, and we probably don't want to expose those.
@@ -167,7 +173,10 @@ TODO:
 * DONE - Field accessors should be handled to honor the `readonly` characteristic
 * DONE - Static types are problematic with the indirect I'm trying to do with static members, because you can't do `(null as StaticType)!...`
 * Properties - static properties are horribly broken, need to revisit
+* Constructors - how to make it work
+
+FUTURE:
 * Inheritance - need to figure out how this actually works and what members we do, or do not, want to pull.
 * How does this work with `struct`s? I think there are some subtle differences ... maybe.
 * Generics will need to be handled correct (type parameters on the extension type, method type parameters on the method, constraints defined, etc.)
-* `[UnsafeAccessorType]` - we're going to need to use at some point
+* `[UnsafeAccessorType]` - we're going to need to use this more

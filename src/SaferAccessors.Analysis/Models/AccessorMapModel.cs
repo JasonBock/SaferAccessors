@@ -24,26 +24,20 @@ internal sealed record AccessorMapModel
 
 		foreach (var member in type.GetMembers())
 		{
-			if (member is IFieldSymbol field)
+			if (member is IFieldSymbol field && 
+				field.CanBeReferencedByName && field.DeclaredAccessibility == Accessibility.Private)
 			{
-				if (field.CanBeReferencedByName && field.DeclaredAccessibility == Accessibility.Private)
-				{
-					fields.Add(new(field, typeReferenceModelContext));
-				}
+				fields.Add(new(field, typeReferenceModelContext));
 			}
-			else if (member is IMethodSymbol method)
+			else if (member is IMethodSymbol method && method.MethodKind != MethodKind.Constructor &&
+				method.CanBeReferencedByName && method.DeclaredAccessibility == Accessibility.Private)
 			{
-				if (method.CanBeReferencedByName && method.DeclaredAccessibility == Accessibility.Private)
-				{
-					methods.Add(new(method, typeReferenceModelContext));
-				}
+				methods.Add(new(method, typeReferenceModelContext));
 			}
-			else if (member is IPropertySymbol property)
+			else if (member is IPropertySymbol property && !property.IsIndexer &&
+				property.CanBeReferencedByName && property.DeclaredAccessibility == Accessibility.Private)
 			{
-				if (property.CanBeReferencedByName && property.DeclaredAccessibility == Accessibility.Private)
-				{
-					properties.Add(new(property, typeReferenceModelContext));
-				}
+				properties.Add(new(property, typeReferenceModelContext));
 			}
 		}
 
