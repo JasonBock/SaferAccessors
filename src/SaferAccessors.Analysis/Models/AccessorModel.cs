@@ -1,4 +1,4 @@
 ﻿namespace SaferAccessors.Analysis.Models;
 
 internal sealed record AccessorModel(ITypeReferenceModel Type, 
-	EquatableArray<FieldModel> Fields, EquatableArray<MethodModel> Methods);
+	EquatableArray<FieldModel> Fields, EquatableArray<MethodModel> Methods, EquatableArray<PropertyModel> Properties);

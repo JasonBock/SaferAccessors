@@ -20,6 +20,7 @@ internal sealed record AccessorMapModel
 		// Get all the members
 		var fields = new List<FieldModel>();
 		var methods = new List<MethodModel>();
+		var properties = new List<PropertyModel>();
 
 		foreach (var member in type.GetMembers())
 		{
@@ -37,9 +38,16 @@ internal sealed record AccessorMapModel
 					methods.Add(new(method, typeReferenceModelContext));
 				}
 			}
+			else if (member is IPropertySymbol property)
+			{
+				if (property.CanBeReferencedByName && property.DeclaredAccessibility == Accessibility.Private)
+				{
+					properties.Add(new(property, typeReferenceModelContext));
+				}
+			}
 		}
 
-		return new(new AccessorModel(typeReferenceModelContext.CreateTypeReference(type), [.. fields], [.. methods]));
+		return new(new AccessorModel(typeReferenceModelContext.CreateTypeReference(type), [.. fields], [.. methods], [.. properties]));
 	}
 
 	internal AccessorModel Accessor { get; }

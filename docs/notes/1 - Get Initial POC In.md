@@ -153,12 +153,20 @@ public static class ContentExtensions
 
 This is one of many cases where `[UnsafeAccessorType]` is needed.
 
+Note: We can't do `init` properties, because of this:
+```
+    // SaferAccessors.Analysis\SaferAccessors.Analysis.SaferAccessorsGenerator\Test_Accessors.g.cs(11,4): error CS9304: 'TestExtensions.extension(Test).Id': cannot declare init-only accessors in an extension block
+    DiagnosticResult.CompilerError("CS9304").WithSpan("SaferAccessors.Analysis\SaferAccessors.Analysis.SaferAccessorsGenerator\Test_Accessors.g.cs", 11, 4, 11, 8).WithArguments("TestExtensions.extension(Test).Id"),
+
+```
+
 TODO:
 * DONE - With the static extension method redirect, it has to be done for both editable and readonly, because you have to pass `null` in as the first parameter for the `extern`
 * DONE - Should we only look for "speakable" members? For example, C# declares a managed backing field for auto properties, and we probably don't want to expose those.
 * DONE - All member access should only include those that have `CanBeReferencedByName` as `true`
 * DONE - Field accessors should be handled to honor the `readonly` characteristic
-* Static types are problematic with the indirect I'm trying to do with static members, because you can't do `(null as StaticType)!...`
+* DONE - Static types are problematic with the indirect I'm trying to do with static members, because you can't do `(null as StaticType)!...`
+* Properties - static properties are horribly broken, need to revisit
 * Inheritance - need to figure out how this actually works and what members we do, or do not, want to pull.
 * How does this work with `struct`s? I think there are some subtle differences ... maybe.
 * Generics will need to be handled correct (type parameters on the extension type, method type parameters on the method, constraints defined, etc.)
