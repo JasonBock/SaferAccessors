@@ -195,4 +195,4 @@ TODO:
 * DONE - Constructors - how to make it work
 
 FUTURE:
-* Performance - Create a Benchmark.NET-based app that shows the difference between Reflection and SaferAccessor
+* DONE - Performance - Create a Benchmark.NET-based app that shows the difference between Reflection and SaferAccessor
