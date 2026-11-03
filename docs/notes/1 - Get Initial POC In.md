@@ -153,18 +153,37 @@ public static class ContentExtensions
 
 This is one of many cases where `[UnsafeAccessorType]` is needed.
 
-Note: We can't do `init` properties, because of this:
-```
-    // SaferAccessors.Analysis\SaferAccessors.Analysis.SaferAccessorsGenerator\Test_Accessors.g.cs(11,4): error CS9304: 'TestExtensions.extension(Test).Id': cannot declare init-only accessors in an extension block
-    DiagnosticResult.CompilerError("CS9304").WithSpan("SaferAccessors.Analysis\SaferAccessors.Analysis.SaferAccessorsGenerator\Test_Accessors.g.cs", 11, 4, 11, 8).WithArguments("TestExtensions.extension(Test).Id"),
+Constructors ... I think they should just be an extension method called `New(...)` and it's directly exposed, no indirect:
 
+```c#
+var thing = Thing.New("Hello");
+Console.WriteLine(thing.Value);
+
+public class Thing
+{
+    private Thing(string value) =>
+        this.Value = value;
+
+    public string Value { get; }
+}
+
+public static class ThingExtensions
+{
+    extension(Thing)
+    {
+        [UnsafeAccessor(UnsafeAccessorKind.Constructor)]
+        public extern static Thing New(string value);        
+    }
+}
 ```
 
-```
-    // SaferAccessors.Analysis\SaferAccessors.Analysis.SaferAccessorsGenerator\Test_Accessors.g.cs(11,16): error CS7036: There is no argument given that corresponds to the required parameter 'value' of 'TestExtensions.extension(Test).SetIdProperty(int)'
-    DiagnosticResult.CompilerError("CS7036").WithSpan("SaferAccessors.Analysis\SaferAccessors.Analysis.SaferAccessorsGenerator\Test_Accessors.g.cs", 11, 16, 11, 29).WithArguments("value", "TestExtensions.extension(Test).SetIdProperty(int)"),
+As far as I know, there is no proposal/work on the horizon for extension constructors in C#. It's been mentioned, but I couldn't find anything even remotely concrete. My **guess** would be that it would have the same syntax:
 
+```c#
+var thing = new Thing("Hello");
 ```
+
+So it wouldn't be too hard to switch to this though some simple regex match and replace.
 
 TODO:
 * DONE - With the static extension method redirect, it has to be done for both editable and readonly, because you have to pass `null` in as the first parameter for the `extern`
@@ -176,6 +195,7 @@ TODO:
 * Constructors - how to make it work
 
 FUTURE:
+* Performance - Create a Benchmark.NET-based app that shows the difference between Reflection and SaferAccessor
 * Inheritance - need to figure out how this actually works and what members we do, or do not, want to pull.
 * How does this work with `struct`s? I think there are some subtle differences ... maybe.
 * Generics will need to be handled correct (type parameters on the extension type, method type parameters on the method, constraints defined, etc.)
