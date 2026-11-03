@@ -16,7 +16,7 @@ Please read the [Overview document](https://github.com/JasonBock/SaferAccessors/
 
 ## Additional Documentation
 
-* [Easier reflection with [UnsafeAccessorType] in .NET 10](https://andrewlock.net/exploring-dotnet-10-preview-features-9-easier-reflection-with-unsafeaccessortype/)
+* [Easier reflection with `[UnsafeAccessorType]` in .NET 10](https://andrewlock.net/exploring-dotnet-10-preview-features-9-easier-reflection-with-unsafeaccessortype/)
 * [UnsafeAccessorAttribute Class](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.unsafeaccessorattribute)
 
 ## Feedback
