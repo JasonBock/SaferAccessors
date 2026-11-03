@@ -192,11 +192,7 @@ TODO:
 * DONE - Field accessors should be handled to honor the `readonly` characteristic
 * DONE - Static types are problematic with the indirect I'm trying to do with static members, because you can't do `(null as StaticType)!...`
 * DONE - Properties - static properties are horribly broken, need to revisit
-* Constructors - how to make it work
+* DONE - Constructors - how to make it work
 
 FUTURE:
 * Performance - Create a Benchmark.NET-based app that shows the difference between Reflection and SaferAccessor
-* Inheritance - need to figure out how this actually works and what members we do, or do not, want to pull.
-* How does this work with `struct`s? I think there are some subtle differences ... maybe.
-* Generics will need to be handled correct (type parameters on the extension type, method type parameters on the method, constraints defined, etc.)
-* `[UnsafeAccessorType]` - we're going to need to use this more
