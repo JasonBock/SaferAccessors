@@ -26,7 +26,7 @@ internal static class PropertyAccessorBuilder
 
 			if (property.HasSet)
 			{
-				indentWriter.WriteLine($"set => (null as {extensionTargets.SelfTargeting})!.Set{property.Name}Property() = value;");
+				indentWriter.WriteLine($"set => (null as {extensionTargets.SelfTargeting})!.Set{property.Name}Property(value);");
 			}
 
 			indentWriter.Indent -= 2;
@@ -45,7 +45,7 @@ internal static class PropertyAccessorBuilder
 				indentWriter.WriteLines(
 					$$"""
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticMethod, Name = "get_{{property.Name}}")]
-					private extern ref {{property.Type.FullyQualifiedName}} Get{{property.Name}}Property();
+					private extern {{property.Type.FullyQualifiedName}} Get{{property.Name}}Property();
 
 					""");
 			}
@@ -55,7 +55,7 @@ internal static class PropertyAccessorBuilder
 				indentWriter.WriteLines(
 					$$"""
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticMethod, Name = "set_{{property.Name}}")]
-					private extern ref {{property.Type.FullyQualifiedName}} Set{{property.Name}}Property();
+					private extern void Set{{property.Name}}Property({{property.Type.FullyQualifiedName}} value);
 
 					""");
 			}
@@ -111,7 +111,7 @@ internal static class PropertyAccessorBuilder
 				indentWriter.WriteLines(
 					$$"""
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Method, Name = "set_{{property.Name}}")]
-					private extern {{property.Type.FullyQualifiedName}} Set{{property.Name}}Property({{property.Type.FullyQualifiedName}} value);
+					private extern void Set{{property.Name}}Property({{property.Type.FullyQualifiedName}} value);
 
 					""");
 			}

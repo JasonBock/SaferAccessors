@@ -177,7 +177,7 @@ public static class ThingExtensions
 }
 ```
 
-As far as I know, there is no proposal/work on the horizon for extension constructors in C#. It's been mentioned, but I couldn't find anything even remotely concrete. My **guess** would be that it would have the same syntax:
+As far as I know, there is no proposal/work on the horizon for extension constructors in C#. It's been mentioned, but I couldn't find anything even remotely concrete. My **guess** would be that it would have the same syntax like the other extension members:
 
 ```c#
 var thing = new Thing("Hello");

@@ -4,20 +4,44 @@ namespace SaferAccessors.Analysis.IntegrationTests.PropertyAccessorGeneratorTest
 
 #pragma warning disable CA1823
 
-public class TestWithGetInstance
+public class TestWithInstance
 {
-	public TestWithGetInstance(int id) => 
-		this.Id = id;
+	private int Id { get; set; }
+}
 
-	private int Id { get; }
+public class TestWithStatic
+{
+	private static int Id { get; set; }
+}
+
+public static class TestWithStaticDeclaredOnStaticType
+{
+	private static int Id { get; set; }
 }
 
 internal static class FieldAccessorGeneratorTest
 {
 	[Test]
-	public static void GetInstance()
+	public static void RoundtripInstance()
 	{
-		var test = new TestWithGetInstance(22);
+		var test = new TestWithInstance
+		{
+			Id = 22
+		};
 		Assert.That(test.Id, Is.EqualTo(22));
+	}
+
+	[Test]
+	public static void RoundtripStatic()
+	{
+		TestWithStatic.Id = 22;
+		Assert.That(TestWithStatic.Id, Is.EqualTo(22));
+	}
+
+	[Test]
+	public static void RoundtripStaticDeclaredOnStaticType()
+	{
+		TestWithStaticDeclaredOnStaticType.Id = 22;
+		Assert.That(TestWithStaticDeclaredOnStaticType.Id, Is.EqualTo(22));
 	}
 }
