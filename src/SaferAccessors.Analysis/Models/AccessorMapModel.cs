@@ -19,20 +19,27 @@ internal sealed record AccessorMapModel
 
 		// Get all the members
 		var fields = new List<FieldModel>();
+		var constructors = new List<MethodModel>();
 		var methods = new List<MethodModel>();
 		var properties = new List<PropertyModel>();
 
 		foreach (var member in type.GetMembers())
 		{
-			if (member is IFieldSymbol field && 
+			if (member is IFieldSymbol field &&
 				field.CanBeReferencedByName && field.DeclaredAccessibility == Accessibility.Private)
 			{
 				fields.Add(new(field, typeReferenceModelContext));
 			}
-			else if (member is IMethodSymbol method && method.MethodKind != MethodKind.Constructor &&
-				method.CanBeReferencedByName && method.DeclaredAccessibility == Accessibility.Private)
+			else if (member is IMethodSymbol method && method.DeclaredAccessibility == Accessibility.Private)
 			{
-				methods.Add(new(method, typeReferenceModelContext));
+				if (method.CanBeReferencedByName && method.MethodKind != MethodKind.Constructor)
+				{
+					methods.Add(new(method, typeReferenceModelContext));
+				}
+				else if (method.MethodKind == MethodKind.Constructor)
+				{
+					constructors.Add(new(method, typeReferenceModelContext));
+				}
 			}
 			else if (member is IPropertySymbol property && !property.IsIndexer &&
 				property.CanBeReferencedByName && property.DeclaredAccessibility == Accessibility.Private)
@@ -41,7 +48,8 @@ internal sealed record AccessorMapModel
 			}
 		}
 
-		return new(new AccessorModel(typeReferenceModelContext.CreateTypeReference(type), [.. fields], [.. methods], [.. properties]));
+		return new(
+			new AccessorModel(typeReferenceModelContext.CreateTypeReference(type), [.. fields], [.. constructors], [.. methods], [.. properties]));
 	}
 
 	internal AccessorModel Accessor { get; }

@@ -58,6 +58,11 @@ internal sealed class AccessorBuilder
 			FieldAccessorBuilder.Build(indentWriter, field, type, extensionTargets);
 		}
 
+		foreach (var constructor in this.Model.Constructors)
+		{
+			ConstructorAccessorBuilder.Build(indentWriter, constructor, type);
+		}
+
 		foreach (var method in this.Model.Methods)
 		{
 			MethodAccessorBuilder.Build(indentWriter, method, type, extensionTargets);

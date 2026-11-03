@@ -191,7 +191,7 @@ TODO:
 * DONE - All member access should only include those that have `CanBeReferencedByName` as `true`
 * DONE - Field accessors should be handled to honor the `readonly` characteristic
 * DONE - Static types are problematic with the indirect I'm trying to do with static members, because you can't do `(null as StaticType)!...`
-* Properties - static properties are horribly broken, need to revisit
+* DONE - Properties - static properties are horribly broken, need to revisit
 * Constructors - how to make it work
 
 FUTURE:
