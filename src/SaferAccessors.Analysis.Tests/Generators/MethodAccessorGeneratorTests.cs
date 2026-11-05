@@ -44,6 +44,28 @@ internal static class MethodAccessorGeneratorTests
 	}
 
 	[Test]
+	public static async Task GenerateWithInstanceMethodOnGenericTypeAsync()
+	{
+		var code =
+			"""
+			using SaferAccessors;
+
+			[assembly: UnsafeAccessorMap(typeof(Test<>))]
+
+			public class Test<T>
+			{
+				private int Compute(T value) => value?.GetHashCode() ?? 0;
+			}
+			""";
+
+		var generatedCode = "";
+
+		await TestAssistants.RunGeneratorAsync<SaferAccessorsGenerator>(code,
+			[($"Test_T_Accessors.g.cs", generatedCode)],
+			[]);
+	}
+
+	[Test]
 	public static async Task GenerateWithStaticMethodAsync()
 	{
 		var code =

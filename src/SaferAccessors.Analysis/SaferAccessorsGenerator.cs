@@ -21,6 +21,16 @@ internal sealed class SaferAccessorsGenerator
 					foreach (var attribute in context.Attributes)
 					{
 						var targetType = (attribute.ConstructorArguments[0].Value as ITypeSymbol)!;
+
+						// We should only see an unbound generic type with the "typeof(...)" case,
+						// but using "typeof(IService)" won't give an unbound generic, so
+						// we'll check it in all cases.
+						if (targetType is INamedTypeSymbol namedType &&
+							namedType.IsUnboundGenericType)
+						{
+							targetType = targetType.OriginalDefinition;
+						}
+
 						models.Add(AccessorMapModel.Create(targetType, typeReferenceModelContext).Accessor);
 					}
 
