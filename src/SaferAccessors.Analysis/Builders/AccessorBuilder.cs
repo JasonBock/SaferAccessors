@@ -45,7 +45,7 @@ internal sealed class AccessorBuilder
 		// Use the naming trick I did in Rocks to get around that.
 		indentWriter.WriteLines(
 			$$"""
-			public static class {{type.Name}}Extensions
+			public static partial class {{type.Name}}Extensions
 			{
 			""");
 
@@ -71,6 +71,28 @@ internal sealed class AccessorBuilder
 		foreach (var property in this.Model.Properties)
 		{
 			PropertyAccessorBuilder.Build(indentWriter, property, type, extensionTargets);
+		}
+
+		// TODO: If the type is generic,
+		// build the private nested static class that contains
+		// the attributed members.
+
+		if (type.IsGeneric)
+		{
+			indentWriter.WriteLines(
+				$$"""
+				private static class {{type.Name}}Accessors<{{type.TypeParameterNames}}>
+				{
+				""");
+			indentWriter.Indent++;
+
+			foreach (var method in this.Model.Methods)
+			{
+				MethodAccessorBuilder.BuildGenericAccessor(indentWriter, method, type);
+			}
+
+			indentWriter.Indent--;
+			indentWriter.WriteLine("}");
 		}
 
 		indentWriter.Indent--;

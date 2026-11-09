@@ -42,6 +42,13 @@ internal sealed class TypeReferenceModelContext
 			this.FullyQualifiedName = type.GetFullyQualifiedName(modelContext.SemanticModel.Compilation);
 			this.SymbolKind = type.Kind;
 			this.IsStatic = type.IsStatic;
+
+			if (type is INamedTypeSymbol namedTypeSymbol)
+			{
+				this.IsGeneric = namedTypeSymbol.IsGenericType;
+				this.TypeParameters = [.. namedTypeSymbol.TypeParameters.Select(_ => modelContext.CreateTypeReference(_))];
+				this.TypeParameterNames = string.Join(", ", namedTypeSymbol.TypeParameters.Select(parameter => parameter.Name));
+			}
 		}
 
 		public int CompareTo(ITypeReferenceModel other) =>
@@ -58,9 +65,12 @@ internal sealed class TypeReferenceModelContext
 		public override string ToString() => this.FullyQualifiedName;
 
 		public string FullyQualifiedName { get; }
+		public bool IsGeneric { get; }
 		public bool IsStatic { get; }
 		public string Name { get; }
 		public string? Namespace { get; }
 		public SymbolKind SymbolKind { get; }
+		public EquatableArray<ITypeReferenceModel> TypeParameters { get; }
+		public string? TypeParameterNames { get; }
 	}
 }

@@ -26,7 +26,7 @@ internal static class PropertyAccessorGeneratorTests
 			
 			#nullable enable
 			
-			public static class TestExtensions
+			public static partial class TestExtensions
 			{
 				extension(global::Test self)
 				{
@@ -70,7 +70,7 @@ internal static class PropertyAccessorGeneratorTests
 			
 			#nullable enable
 			
-			public static class TestExtensions
+			public static partial class TestExtensions
 			{
 				extension(global::Test self)
 				{
@@ -114,7 +114,7 @@ internal static class PropertyAccessorGeneratorTests
 			
 			#nullable enable
 			
-			public static class TestExtensions
+			public static partial class TestExtensions
 			{
 				extension(global::Test)
 				{
@@ -161,7 +161,7 @@ internal static class PropertyAccessorGeneratorTests
 			
 			#nullable enable
 			
-			public static class TestExtensions
+			public static partial class TestExtensions
 			{
 				extension(global::Test)
 				{
@@ -208,7 +208,7 @@ internal static class PropertyAccessorGeneratorTests
 			
 			#nullable enable
 			
-			public static class TestExtensions
+			public static partial class TestExtensions
 			{
 				extension(global::Test)
 				{
@@ -255,7 +255,7 @@ internal static class PropertyAccessorGeneratorTests
 			
 			#nullable enable
 			
-			public static class TestExtensions
+			public static partial class TestExtensions
 			{
 				extension(global::Test)
 				{

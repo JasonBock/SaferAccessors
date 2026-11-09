@@ -157,7 +157,7 @@ If the type is not generic and a method is generic, no redirects need to be done
 
 So fields are the exception, methods and properties work exactly the same with the workaround, constructors need a similar workaround but slightly different.
 
-TODO:
+ISSUE TODO:
 * Handle the following members and add tests (unit and integration)
     * Methods
         * Generic type
@@ -183,3 +183,6 @@ TODO:
         * Instance
         * Static on instance
         * Static on static
+* Handle types and methods that have constraints
+
+FUTURE TODO: I should also consider putting all the accessors that are generated for static method calls into that class - that would probably be a better organization of code.

@@ -27,7 +27,7 @@ internal static class ConstructorAccessorGeneratorTests
 			
 			#nullable enable
 			
-			public static class TestExtensions
+			public static partial class TestExtensions
 			{
 				extension(global::Test)
 				{

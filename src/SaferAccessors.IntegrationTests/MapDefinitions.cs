@@ -6,6 +6,7 @@
 [assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.FieldAccessorGeneratorTestTypes.TestWithReadOnlyStatic))]
 [assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.FieldAccessorGeneratorTestTypes.TestWithReadOnlyStaticDeclaredOnStaticType))]
 [assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.MethodAccessorGeneratorTestTypes.TestWithInstance))]
+[assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.MethodAccessorGeneratorTestTypes.TestWithInstance<>))]
 [assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.MethodAccessorGeneratorTestTypes.TestWithStatic))]
 [assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.MethodAccessorGeneratorTestTypes.TestWithStaticDeclaredOnStaticType))]
 [assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.PropertyAccessorGeneratorTestTypes.TestWithInstance))]
