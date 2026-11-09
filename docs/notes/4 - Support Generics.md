@@ -162,9 +162,9 @@ ISSUE TODO:
     * Methods
         * Generic type
             * Non-generic method
-                * Instance
-                * Static on instance
-                * Static on static
+                * DONE - Instance
+                * DONE - Static on instance
+                * DONE - Static on static
             * Generic method
                 * Instance
                 * Static on instance

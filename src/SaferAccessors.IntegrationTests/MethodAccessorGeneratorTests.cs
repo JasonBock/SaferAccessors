@@ -17,9 +17,19 @@ public class TestWithStatic
 	private static int GetValue(string key) => key.Length;
 }
 
+public class TestWithStatic<T>
+{
+	private static int GetValue(T key) => key?.ToString()!.Length ?? 0;
+}
+
 public static class TestWithStaticDeclaredOnStaticType
 {
 	private static int GetValue(string key) => key.Length;
+}
+
+public static class TestWithStaticDeclaredOnStaticType<T>
+{
+	private static int GetValue(T key) => key?.ToString()!.Length ?? 0;
 }
 
 internal static class MethodAccessorGeneratorTest
@@ -43,6 +53,14 @@ internal static class MethodAccessorGeneratorTest
 		Assert.That(TestWithStatic.GetValue("333"), Is.EqualTo(3));
 
 	[Test]
+	public static void InvokeStaticOnGeneric() =>
+		Assert.That(TestWithStatic<string>.GetValue("333"), Is.EqualTo(3));
+
+	[Test]
 	public static void InvokeStaticDeclaredOnStaticType() =>
 		Assert.That(TestWithStaticDeclaredOnStaticType.GetValue("333"), Is.EqualTo(3));
+
+	[Test]
+	public static void InvokeStaticDeclaredOnStaticGenericType() =>
+		Assert.That(TestWithStaticDeclaredOnStaticType<string>.GetValue("333"), Is.EqualTo(3));
 }

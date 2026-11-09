@@ -88,7 +88,7 @@ internal sealed class AccessorBuilder
 
 			foreach (var method in this.Model.Methods)
 			{
-				MethodAccessorBuilder.BuildGenericAccessor(indentWriter, method, type);
+				MethodAccessorBuilder.BuildGenericAccessor(indentWriter, method, type, extensionTargets);
 			}
 
 			indentWriter.Indent--;
