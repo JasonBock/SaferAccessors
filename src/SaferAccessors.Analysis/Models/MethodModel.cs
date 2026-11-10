@@ -17,6 +17,10 @@ internal sealed record MethodModel
 		this.DefaultConstraints = method.GetDefaultConstraints();
 		this.TypeArguments = [.. method.TypeArguments.Select(_ => typeReferenceModelContext.CreateTypeReference(_))];
 		this.TypeParameters = [.. method.TypeParameters.Select(_ => typeReferenceModelContext.CreateTypeReference(_))];
+		this.TypeParameterNames =
+			method.TypeParameters.Length > 0 ?
+			string.Join(", ", method.TypeParameters.Select(parameter => parameter.Name)) :
+			null;
 
 		this.Name = method.Name;
 
@@ -45,4 +49,5 @@ internal sealed record MethodModel
 	internal bool ReturnsByRefReadOnly { get; }
 	internal EquatableArray<ITypeReferenceModel> TypeArguments { get; }
 	internal EquatableArray<ITypeReferenceModel> TypeParameters { get; }
+	internal string? TypeParameterNames { get; }
 }

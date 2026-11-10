@@ -10,6 +10,9 @@ public class TestWithInstance
 public class TestWithInstance<T>
 {
 	private int GetValue(T key) => key?.ToString()!.Length ?? 0;
+	private int Compute<V>(T value, V data) =>
+		(value?.ToString()!.Length ?? 0) +
+		(data?.ToString()!.Length ?? 0);
 }
 
 public class TestWithStatic
@@ -20,6 +23,9 @@ public class TestWithStatic
 public class TestWithStatic<T>
 {
 	private static int GetValue(T key) => key?.ToString()!.Length ?? 0;
+	private static int Compute<V>(T value, V data) =>
+		(value?.ToString()!.Length ?? 0) +
+		(data?.ToString()!.Length ?? 0);
 }
 
 public static class TestWithStaticDeclaredOnStaticType
@@ -30,6 +36,9 @@ public static class TestWithStaticDeclaredOnStaticType
 public static class TestWithStaticDeclaredOnStaticType<T>
 {
 	private static int GetValue(T key) => key?.ToString()!.Length ?? 0;
+	private static int Compute<V>(T value, V data) =>
+		(value?.ToString()!.Length ?? 0) +
+		(data?.ToString()!.Length ?? 0);
 }
 
 internal static class MethodAccessorGeneratorTest
@@ -49,6 +58,13 @@ internal static class MethodAccessorGeneratorTest
 	}
 
 	[Test]
+	public static void InvokeGenericInstanceOnGeneric()
+	{
+		var test = new TestWithInstance<string>();
+		Assert.That(test.Compute("333", 22), Is.EqualTo(5));
+	}
+
+	[Test]
 	public static void InvokeStatic() => 
 		Assert.That(TestWithStatic.GetValue("333"), Is.EqualTo(3));
 
@@ -57,10 +73,18 @@ internal static class MethodAccessorGeneratorTest
 		Assert.That(TestWithStatic<string>.GetValue("333"), Is.EqualTo(3));
 
 	[Test]
+	public static void InvokeGenericStaticOnGeneric() =>
+		Assert.That(TestWithStatic<string>.Compute("333", 22), Is.EqualTo(5));
+
+	[Test]
 	public static void InvokeStaticDeclaredOnStaticType() =>
 		Assert.That(TestWithStaticDeclaredOnStaticType.GetValue("333"), Is.EqualTo(3));
 
 	[Test]
 	public static void InvokeStaticDeclaredOnStaticGenericType() =>
 		Assert.That(TestWithStaticDeclaredOnStaticType<string>.GetValue("333"), Is.EqualTo(3));
+
+	[Test]
+	public static void InvokeGenericStaticDeclaredOnStaticGenericType() =>
+		Assert.That(TestWithStaticDeclaredOnStaticType<string>.Compute("333", 22), Is.EqualTo(5));
 }

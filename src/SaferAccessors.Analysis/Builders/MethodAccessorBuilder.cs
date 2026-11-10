@@ -1,7 +1,6 @@
 ﻿using SaferAccessors.Analysis.Extensions;
 using SaferAccessors.Analysis.Models;
 using System.CodeDom.Compiler;
-using System.Reflection.Metadata;
 
 namespace SaferAccessors.Analysis.Builders;
 
@@ -11,6 +10,10 @@ internal static class MethodAccessorBuilder
 	{
 		var parameters = string.Join(", ", method.Parameters.Select(parameter => $"{parameter.Type.FullyQualifiedName} {parameter.Name}"));
 		var parameterNames = string.Join(", ", method.Parameters.Select(parameter => parameter.Name));
+		var methodTypeParameterNames =
+			method.TypeParameterNames is not null ?
+			$"<{method.TypeParameterNames}>" :
+			null;
 
 		if (method.IsStatic)
 		{
@@ -20,8 +23,8 @@ internal static class MethodAccessorBuilder
 					$$"""
 					extension<{{type.TypeParameterNames}}>({{type.FullyQualifiedName}})
 					{
-						public static {{method.ReturnType.FullyQualifiedName}} {{method.Name}}({{parameters}}) =>
-							{{type.Name}}Accessors<{{type.TypeParameterNames}}>.{{method.Name}}((null as {{extensionTargets.SelfTargeting}})!, {{parameterNames}});
+						public static {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{parameters}}) =>
+							{{type.Name}}Accessors<{{type.TypeParameterNames}}>.{{method.Name}}{{methodTypeParameterNames}}((null as {{extensionTargets.SelfTargeting}})!, {{parameterNames}});
 					}
 
 					""");
@@ -32,14 +35,14 @@ internal static class MethodAccessorBuilder
 					$$"""
 					extension({{type.FullyQualifiedName}})
 					{
-						public static {{method.ReturnType.FullyQualifiedName}} {{method.Name}}({{parameters}}) =>
-							{{type.Name}}Accessors.{{method.Name}}((null as {{extensionTargets.SelfTargeting}})!, {{parameterNames}});
+						public static {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{parameters}}) =>
+							{{type.Name}}Accessors.{{method.Name}}{{methodTypeParameterNames}}((null as {{extensionTargets.SelfTargeting}})!, {{parameterNames}});
 					}
 
 					private static partial class {{type.Name}}Accessors
 					{
 						[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticMethod, Name = "{{method.Name}}")]
-						public static extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}({{extensionTargets.SelfReference}}, {{parameters}});
+						public static extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{extensionTargets.SelfReference}}, {{parameters}});
 					}
 
 					""");
@@ -53,8 +56,8 @@ internal static class MethodAccessorBuilder
 					$$"""
 					extension<{{type.TypeParameterNames}}>({{type.FullyQualifiedName}} self)
 					{
-						public {{method.ReturnType.FullyQualifiedName}} {{method.Name}}({{parameters}}) =>
-							{{type.Name}}Accessors<{{type.TypeParameterNames}}>.{{method.Name}}(self, {{parameterNames}});
+						public {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{parameters}}) =>
+							{{type.Name}}Accessors<{{type.TypeParameterNames}}>.{{method.Name}}{{methodTypeParameterNames}}(self, {{parameterNames}});
 					}
 
 					""");
@@ -66,7 +69,7 @@ internal static class MethodAccessorBuilder
 					extension({{type.FullyQualifiedName}} self)
 					{
 						[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Method, Name = "{{method.Name}}")]
-						public extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}({{parameters}});
+						public extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{parameters}});
 					}
 				
 					""");
@@ -78,11 +81,15 @@ internal static class MethodAccessorBuilder
 	{
 		var accessorKind = method.IsStatic ? "StaticMethod" : "Method";
 		var parameters = string.Join(", ", method.Parameters.Select(parameter => $"{parameter.Type.FullyQualifiedName} {parameter.Name}"));
+		var methodTypeParameterNames =
+			method.TypeParameterNames is not null ?
+			$"<{method.TypeParameterNames}>" :
+			null;
 
 		indentWriter.WriteLines(
 			$$"""
 			[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.{{accessorKind}}, Name = "{{method.Name}}")]
-			public static extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}({{extensionTargets.SelfReference}}, {{parameters}});
+			public static extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{extensionTargets.SelfReference}}, {{parameters}});
 				
 			""");
 	}
