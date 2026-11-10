@@ -33,15 +33,15 @@ internal static class MethodAccessorBuilder
 					extension({{type.FullyQualifiedName}})
 					{
 						public static {{method.ReturnType.FullyQualifiedName}} {{method.Name}}({{parameters}}) =>
-							(null as {{extensionTargets.SelfTargeting}})!.{{method.Name}}Method({{parameterNames}});
+							{{type.Name}}Accessors.{{method.Name}}((null as {{extensionTargets.SelfTargeting}})!, {{parameterNames}});
 					}
 
-					extension({{extensionTargets.SelfReference}})
+					private static partial class {{type.Name}}Accessors
 					{
 						[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticMethod, Name = "{{method.Name}}")]
-						private extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}Method({{parameters}});
+						public static extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}({{extensionTargets.SelfReference}}, {{parameters}});
 					}
-				
+
 					""");
 			}
 		}
@@ -74,11 +74,10 @@ internal static class MethodAccessorBuilder
 		}
 	}
 
-	internal static void BuildGenericAccessor(IndentedTextWriter indentWriter, MethodModel method, ITypeReferenceModel type, ExtensionTargets extensionTargets)
+	internal static void BuildGenericAccessor(IndentedTextWriter indentWriter, MethodModel method, ExtensionTargets extensionTargets)
 	{
 		var accessorKind = method.IsStatic ? "StaticMethod" : "Method";
 		var parameters = string.Join(", ", method.Parameters.Select(parameter => $"{parameter.Type.FullyQualifiedName} {parameter.Name}"));
-		var targetType = type.IsStatic ? "object?" : type.FullyQualifiedName;
 
 		indentWriter.WriteLines(
 			$$"""

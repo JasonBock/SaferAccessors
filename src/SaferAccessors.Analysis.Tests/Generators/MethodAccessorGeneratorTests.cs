@@ -113,13 +113,13 @@ internal static class MethodAccessorGeneratorTests
 				extension(global::Test)
 				{
 					public static int GetValue(string key) =>
-						(null as global::Test)!.GetValueMethod(key);
+						TestAccessors.GetValue((null as global::Test)!, key);
 				}
 				
-				extension(global::Test self)
+				private static partial class TestAccessors
 				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticMethod, Name = "GetValue")]
-					private extern int GetValueMethod(string key);
+					public static extern int GetValue(global::Test self, string key);
 				}
 				
 			}
@@ -201,13 +201,13 @@ internal static class MethodAccessorGeneratorTests
 				extension(global::Test)
 				{
 					public static int GetValue(string key) =>
-						(null as object)!.GetValueMethod(key);
+						TestAccessors.GetValue((null as object)!, key);
 				}
 				
-				extension([global::System.Runtime.CompilerServices.UnsafeAccessorType("Test")] object? self)
+				private static partial class TestAccessors
 				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticMethod, Name = "GetValue")]
-					private extern int GetValueMethod(string key);
+					public static extern int GetValue([global::System.Runtime.CompilerServices.UnsafeAccessorType("Test")] object? self, string key);
 				}
 				
 			}

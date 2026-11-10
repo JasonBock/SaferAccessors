@@ -32,11 +32,14 @@ internal static class PropertyAccessorGeneratorTests
 				{
 					public int Id
 					{
-						get => self.GetIdProperty();
+						get => TestAccessors.GetId(self);
 					}
+				}
 				
+				private static partial class TestAccessors
+				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Method, Name = "get_Id")]
-					private extern int GetIdProperty();
+					public static extern int GetId(global::Test self);
 					
 				}
 				
@@ -76,11 +79,14 @@ internal static class PropertyAccessorGeneratorTests
 				{
 					public int Id
 					{
-						set => self.SetIdProperty(value);
+						set => TestAccessors.SetId(self, value);
 					}
+				}
 				
+				private static partial class TestAccessors
+				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Method, Name = "set_Id")]
-					private extern void SetIdProperty(int value);
+					public static extern void SetId(global::Test self, int value);
 					
 				}
 				
@@ -120,14 +126,14 @@ internal static class PropertyAccessorGeneratorTests
 				{
 					public static int Id
 					{
-						get => (null as global::Test)!.GetIdProperty();
+						get => TestAccessors.GetId((null as global::Test)!);
 					}
 				}
 				
-				extension(global::Test self)
+				private static partial class TestAccessors
 				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticMethod, Name = "get_Id")]
-					private extern int GetIdProperty();
+					public static extern int GetId(global::Test self);
 					
 				}
 				
@@ -167,14 +173,14 @@ internal static class PropertyAccessorGeneratorTests
 				{
 					public static int Id
 					{
-						set => (null as global::Test)!.SetIdProperty(value);
+						set => TestAccessors.SetId((null as global::Test)!, value);
 					}
 				}
 				
-				extension(global::Test self)
+				private static partial class TestAccessors
 				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticMethod, Name = "set_Id")]
-					private extern void SetIdProperty(int value);
+					public static extern void SetId(global::Test self, int value);
 					
 				}
 				
@@ -214,14 +220,14 @@ internal static class PropertyAccessorGeneratorTests
 				{
 					public static int Id
 					{
-						get => (null as object)!.GetIdProperty();
+						get => TestAccessors.GetId((null as object)!);
 					}
 				}
 				
-				extension([global::System.Runtime.CompilerServices.UnsafeAccessorType("Test")] object? self)
+				private static partial class TestAccessors
 				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticMethod, Name = "get_Id")]
-					private extern int GetIdProperty();
+					public static extern int GetId([global::System.Runtime.CompilerServices.UnsafeAccessorType("Test")] object? self);
 					
 				}
 				
@@ -261,14 +267,14 @@ internal static class PropertyAccessorGeneratorTests
 				{
 					public static int Id
 					{
-						set => (null as object)!.SetIdProperty(value);
+						set => TestAccessors.SetId((null as object)!, value);
 					}
 				}
 				
-				extension([global::System.Runtime.CompilerServices.UnsafeAccessorType("Test")] object? self)
+				private static partial class TestAccessors
 				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticMethod, Name = "set_Id")]
-					private extern void SetIdProperty(int value);
+					public static extern void SetId([global::System.Runtime.CompilerServices.UnsafeAccessorType("Test")] object? self, int value);
 					
 				}
 				

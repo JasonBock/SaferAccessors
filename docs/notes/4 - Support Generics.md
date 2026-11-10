@@ -157,6 +157,35 @@ If the type is not generic and a method is generic, no redirects need to be done
 
 So fields are the exception, methods and properties work exactly the same with the workaround, constructors need a similar workaround but slightly different.
 
+I'm wondering if should make **all** redirects, whether needed for generics or not, consistent. That is, there's a `private static partial class {TypeName}Accessors` that contains all redirects:
+
+```c#
+public class Test
+{
+  private static int GetValue(string key) => 22;
+}
+
+public static partial class TestExtensions
+{
+  extension(global::Test)
+  {
+    public static int GetValue(string key) =>
+      TestAccessors.GetValue((null as Test)!, key);
+  }
+	
+  private static partial class TestAccessors
+  {
+    [UnsafeAccessor(UnsafeAccessorKind.StaticMethod, Name = "GetValue")]
+    public static extern int GetValue(Test self, string key);
+  }
+}
+```
+
+* DONE - Methods
+* DONE - Properties
+* Constructors
+* Fields
+
 ISSUE TODO:
 * Handle the following members and add tests (unit and integration)
     * Methods

@@ -16,10 +16,6 @@ internal sealed class ExtensionTargets
 			typeReferenceModel.IsStatic ?
 				"object" :
 				typeReferenceModel.FullyQualifiedName;
-		this.SelfReference =
-			typeReferenceModel.IsStatic ?
-				$"""[global::System.Runtime.CompilerServices.UnsafeAccessorType("{unsafeTypeNamespace}{unsafeTypeName}")] object? self""" :
-				$"{typeReferenceModel.FullyQualifiedName} self";
 
 		if (typeReferenceModel.IsStatic)
 		{

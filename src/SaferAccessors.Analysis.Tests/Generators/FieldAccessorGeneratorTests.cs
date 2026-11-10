@@ -32,15 +32,15 @@ internal static class FieldAccessorGeneratorTests
 				{
 					public int id
 					{
-						get => self.idField();
-						set => self.idField() = value;
+						get => TestAccessors.id(self);
+						set => TestAccessors.id(self) = value;
 					}
 				}
 				
-				extension(global::Test self)
+				private static partial class TestAccessors
 				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "id")]
-					private extern ref int idField();
+					public static extern ref int id(global::Test self);
 				}
 				
 			}
@@ -79,14 +79,14 @@ internal static class FieldAccessorGeneratorTests
 				{
 					public int id
 					{
-						get => self.idField();
+						get => TestAccessors.id(self);
 					}
 				}
 				
-				extension(global::Test self)
+				private static partial class TestAccessors
 				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "id")]
-					private extern ref int idField();
+					public static extern ref int id(global::Test self);
 				}
 				
 			}
@@ -125,15 +125,15 @@ internal static class FieldAccessorGeneratorTests
 				{
 					public static int id
 					{
-						get => (null as global::Test)!.idField();
-						set => (null as global::Test)!.idField() = value;
+						get => TestAccessors.id((null as global::Test)!);
+						set => TestAccessors.id((null as global::Test)!) = value;
 					}
 				}
 				
-				extension(global::Test self)
+				private static partial class TestAccessors
 				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticField, Name = "id")]
-					private extern ref int idField();
+					public static extern ref int id(global::Test self);
 				}
 				
 			}
@@ -172,14 +172,14 @@ internal static class FieldAccessorGeneratorTests
 				{
 					public static int id
 					{
-						get => (null as global::Test)!.idField();
+						get => TestAccessors.id((null as global::Test)!);
 					}
 				}
 				
-				extension(global::Test self)
+				private static partial class TestAccessors
 				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticField, Name = "id")]
-					private extern ref int idField();
+					public static extern ref int id(global::Test self);
 				}
 				
 			}

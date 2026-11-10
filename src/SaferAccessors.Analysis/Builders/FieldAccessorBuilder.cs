@@ -18,7 +18,7 @@ internal static class FieldAccessorBuilder
 					{
 						public static {{field.Type.FullyQualifiedName}} {{field.Name}}
 						{
-							get => (null as {{extensionTargets.SelfTargeting}})!.{{field.Name}}Field();
+							get => {{type.Name}}Accessors.{{field.Name}}((null as {{extensionTargets.SelfTargeting}})!);
 						}
 					}
 
@@ -32,8 +32,8 @@ internal static class FieldAccessorBuilder
 					{
 						public static {{field.Type.FullyQualifiedName}} {{field.Name}}
 						{
-							get => (null as {{extensionTargets.SelfTargeting}})!.{{field.Name}}Field();
-							set => (null as {{extensionTargets.SelfTargeting}})!.{{field.Name}}Field() = value;
+							get => {{type.Name}}Accessors.{{field.Name}}((null as {{extensionTargets.SelfTargeting}})!);
+							set => {{type.Name}}Accessors.{{field.Name}}((null as {{extensionTargets.SelfTargeting}})!) = value;
 						}
 					}
 
@@ -42,10 +42,10 @@ internal static class FieldAccessorBuilder
 
 			indentWriter.WriteLines(
 				$$"""
-				extension({{extensionTargets.SelfReference}})
+				private static partial class {{type.Name}}Accessors
 				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticField, Name = "{{field.Name}}")]
-					private extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}Field();
+					public static extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}({{extensionTargets.SelfReference}});
 				}
 
 				""");
@@ -60,7 +60,7 @@ internal static class FieldAccessorBuilder
 					{
 						public {{field.Type.FullyQualifiedName}} {{field.Name}}
 						{
-							get => self.{{field.Name}}Field();
+							get => {{type.Name}}Accessors.{{field.Name}}(self);
 						}
 					}
 
@@ -74,8 +74,8 @@ internal static class FieldAccessorBuilder
 					{
 						public {{field.Type.FullyQualifiedName}} {{field.Name}}
 						{
-							get => self.{{field.Name}}Field();
-							set => self.{{field.Name}}Field() = value;
+							get => {{type.Name}}Accessors.{{field.Name}}(self);
+							set => {{type.Name}}Accessors.{{field.Name}}(self) = value;
 						}
 					}
 
@@ -84,10 +84,10 @@ internal static class FieldAccessorBuilder
 
 			indentWriter.WriteLines(
 				$$"""
-				extension({{type.FullyQualifiedName}} self)
+				private static partial class {{type.Name}}Accessors
 				{
 					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
-					private extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}Field();
+					public static extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}({{extensionTargets.SelfReference}});
 				}
 
 				""");
