@@ -186,24 +186,18 @@ public static partial class TestExtensions
 * DONE - Constructors
 * DONE - Fields
 
-    // SaferAccessors.Analysis\SaferAccessors.Analysis.SaferAccessorsGenerator\Test_T_Accessors.g.cs(9,31): error CS0246: The type or namespace name 'V' could not be found (are you missing a using directive or an assembly reference?)
-    DiagnosticResult.CompilerError("CS0246").WithSpan("SaferAccessors.Analysis\SaferAccessors.Analysis.SaferAccessorsGenerator\Test_T_Accessors.g.cs", 9, 31, 9, 32).WithArguments("V"),
-    // SaferAccessors.Analysis\SaferAccessors.Analysis.SaferAccessorsGenerator\Test_T_Accessors.g.cs(16,67): error CS0246: The type or namespace name 'V' could not be found (are you missing a using directive or an assembly reference?)
-    DiagnosticResult.CompilerError("CS0246").WithSpan("SaferAccessors.Analysis\SaferAccessors.Analysis.SaferAccessorsGenerator\Test_T_Accessors.g.cs", 16, 67, 16, 68).WithArguments("V"),
-
-
 ISSUE TODO:
 * Handle the following members and add tests (unit and integration)
     * Methods
         * Generic type
-            * Non-generic method
+            * DONE - Non-generic method
                 * DONE - Instance
                 * DONE - Static on instance
                 * DONE - Static on static
-            * Generic method
+            * DONE - Generic method
                 * DONE - Instance
-                * Static on instance
-                * Static on static
+                * DONE - Static on instance
+                * DONE - Static on static
         * Non-generic type
             * Generic method
                 * Instance
