@@ -204,14 +204,14 @@ ISSUE TODO:
                 * DONE - Static on instance
                 * DONE - Static on static
     * Properties
+        * DONE - Instance
+        * Static on instance
+        * Static on static
+    * Fields
         * Instance
         * Static on instance
         * Static on static
     * Constructors
-    * Fields (no work, just tests)
-        * Instance
-        * Static on instance
-        * Static on static
 * Handle types and methods that have constraints
 
 FUTURE TODO:
