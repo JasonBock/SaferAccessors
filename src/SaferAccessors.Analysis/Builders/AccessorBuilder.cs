@@ -91,6 +91,11 @@ internal sealed class AccessorBuilder
 				MethodAccessorBuilder.BuildGenericAccessor(indentWriter, method, extensionTargets);
 			}
 
+			foreach (var property in this.Model.Properties)
+			{
+				PropertyAccessorBuilder.BuildGenericAccessor(indentWriter, property, extensionTargets);
+			}
+
 			indentWriter.Indent--;
 			indentWriter.WriteLine("}");
 		}

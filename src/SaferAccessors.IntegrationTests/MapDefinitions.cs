@@ -12,5 +12,6 @@
 [assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.MethodAccessorGeneratorTestTypes.TestWithStaticDeclaredOnStaticType))]
 [assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.MethodAccessorGeneratorTestTypes.TestWithStaticDeclaredOnStaticType<>))]
 [assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.PropertyAccessorGeneratorTestTypes.TestWithInstance))]
+[assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.PropertyAccessorGeneratorTestTypes.TestWithInstance<>))]
 [assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.PropertyAccessorGeneratorTestTypes.TestWithStatic))]
 [assembly: global::SaferAccessors.UnsafeAccessorMap(typeof(global::SaferAccessors.Analysis.IntegrationTests.PropertyAccessorGeneratorTestTypes.TestWithStaticDeclaredOnStaticType))]

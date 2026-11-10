@@ -188,8 +188,8 @@ public static partial class TestExtensions
 
 ISSUE TODO:
 * Handle the following members and add tests (unit and integration)
-    * Methods
-        * Generic type
+    * DONE - Methods
+        * DONE - Generic type
             * DONE - Non-generic method
                 * DONE - Instance
                 * DONE - Static on instance
@@ -198,11 +198,11 @@ ISSUE TODO:
                 * DONE - Instance
                 * DONE - Static on instance
                 * DONE - Static on static
-        * Non-generic type
-            * Generic method
-                * Instance
-                * Static on instance
-                * Static on static
+        * DONE - Non-generic type
+            * DONE - Generic method
+                * DONE - Instance
+                * DONE - Static on instance
+                * DONE - Static on static
     * Properties
         * Instance
         * Static on instance
@@ -214,4 +214,5 @@ ISSUE TODO:
         * Static on static
 * Handle types and methods that have constraints
 
-FUTURE TODO: I should also consider putting all the accessors that are generated for static method calls into that class - that would probably be a better organization of code.
+FUTURE TODO:
+* Method definitions - specifically, `in`, `out`, `ref`, `[Scoped]`, `ref` returns, `ref readonly` returns, what can be done here with `[UnsafeAccessor]` and what do I need to update

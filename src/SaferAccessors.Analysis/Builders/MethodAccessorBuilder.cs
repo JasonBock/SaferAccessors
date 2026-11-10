@@ -54,7 +54,7 @@ internal static class MethodAccessorBuilder
 			{
 				indentWriter.WriteLines(
 					$$"""
-					extension<{{type.TypeParameterNames}}>({{type.FullyQualifiedName}} self)
+					extension<{{type.TypeParameterNames}}>({{extensionTargets.SelfReference}})
 					{
 						public {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{parameters}}) =>
 							{{type.Name}}Accessors<{{type.TypeParameterNames}}>.{{method.Name}}{{methodTypeParameterNames}}(self, {{parameterNames}});
@@ -66,7 +66,7 @@ internal static class MethodAccessorBuilder
 			{
 				indentWriter.WriteLines(
 					$$"""
-					extension({{type.FullyQualifiedName}} self)
+					extension({{extensionTargets.SelfReference}})
 					{
 						[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Method, Name = "{{method.Name}}")]
 						public extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{parameters}});

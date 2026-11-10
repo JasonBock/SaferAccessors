@@ -9,6 +9,13 @@ public class TestWithInstance
 	private int Id { get; set; }
 }
 
+public class TestWithInstance<T>
+{
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+	private T Id { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+}
+
 public class TestWithStatic
 {
 	private static int Id { get; set; }
@@ -25,6 +32,16 @@ internal static class FieldAccessorGeneratorTest
 	public static void RoundtripInstance()
 	{
 		var test = new TestWithInstance
+		{
+			Id = 22
+		};
+		Assert.That(test.Id, Is.EqualTo(22));
+	}
+
+	[Test]
+	public static void RoundtripInstanceOnGenericType()
+	{
+		var test = new TestWithInstance<int>
 		{
 			Id = 22
 		};
