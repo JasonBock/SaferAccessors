@@ -5,7 +5,7 @@
 		<Copyright>Copyright © 2026</Copyright>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<LangVersion>preview</LangVersion>
+		<LangVersion>latest</LangVersion>
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 		<!-- Ignoring NU1603 for Roslyn pre-release package sanity -->
 		<NoWarn>CA1861;CSLA0007;NU1603</NoWarn>
@@ -14,7 +14,7 @@
 		<NuGetAuditMode>all</NuGetAuditMode>
 		<NuGetAuditLevel>critical</NuGetAuditLevel>
 		<Nullable>enable</Nullable>
-		<TargetFramework>net10.0</TargetFramework>
+		<TargetFramework>net11.0</TargetFramework>
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 		<UseArtifactsOutput>true</UseArtifactsOutput>
 		<Version>0.1.0</Version>

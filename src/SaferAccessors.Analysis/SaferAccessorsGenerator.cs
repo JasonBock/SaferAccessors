@@ -1,6 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using SaferAccessors.Analysis.Builders;
 using SaferAccessors.Analysis.Models;
+using SaferAccessors.Extensions;
 using System.Collections.Immutable;
 
 namespace SaferAccessors.Analysis;
