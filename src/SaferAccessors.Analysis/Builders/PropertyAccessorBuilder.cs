@@ -29,7 +29,7 @@ internal static class PropertyAccessorBuilder
 
 				if (property.HasSet)
 				{
-					indentWriter.WriteLine($"set => {type.Name}Accessors<{type.TypeParameterNames}>((null as {extensionTargets.SelfTargeting})!, value);");
+					indentWriter.WriteLine($"set => {type.Name}Accessors<{type.TypeParameterNames}>.Set{property.Name}((null as {extensionTargets.SelfTargeting})!, value);");
 				}
 
 				indentWriter.Indent -= 2;
