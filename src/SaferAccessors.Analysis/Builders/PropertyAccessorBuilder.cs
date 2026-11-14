@@ -1,7 +1,6 @@
 ﻿using SaferAccessors.Analysis.Extensions;
 using SaferAccessors.Analysis.Models;
 using System.CodeDom.Compiler;
-using System.Reflection.Metadata;
 
 namespace SaferAccessors.Analysis.Builders;
 

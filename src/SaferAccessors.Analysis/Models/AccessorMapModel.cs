@@ -42,7 +42,9 @@ internal sealed record AccessorMapModel
 				}
 			}
 			else if (member is IPropertySymbol property && !property.IsIndexer &&
-				property.CanBeReferencedByName && property.DeclaredAccessibility == Accessibility.Private)
+				property.CanBeReferencedByName && 
+				((property.GetMethod is not null && property.GetMethod.DeclaredAccessibility == Accessibility.Private) ||
+				(property.SetMethod is not null && property.SetMethod.DeclaredAccessibility == Accessibility.Private)))
 			{
 				properties.Add(new(property, typeReferenceModelContext));
 			}

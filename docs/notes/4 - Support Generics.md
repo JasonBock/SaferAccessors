@@ -187,7 +187,7 @@ public static partial class TestExtensions
 * DONE - Fields
 
 ISSUE TODO:
-* Handle the following members and add tests (unit and integration)
+* DONE - Handle the following members and add tests (unit and integration)
     * DONE - Methods
         * DONE - Generic type
             * DONE - Non-generic method
@@ -211,12 +211,17 @@ ISSUE TODO:
         * DONE - Instance
         * DONE - Static on instance
         * DONE - Static on static
-    * Constructors
+    * DONE - Constructors
+* DONE - Properties with a public getter but private setter, need to handle that.
+* DONE - Overview doc
+    * DONE - Break out `#Usage` section to how it works for referencing the NuGet package, and then examples for each section, calling out "oddities" like `New()` for constructors and mixed accessibility for properties
 * Handle types and methods that have constraints
-* Properties with a public getter but private setter, need to handle that.
+* What should we do when we don't have any targets? Generate an empty static class? Skip it? Document what happens either way.
 * .NET 11/`latest` LangVersion
+
 
 FUTURE TODO:
 * ISSUE CREATED - Types in referenced assemblies - Well, as I found out, non-public members - more to the point, **private** members - don't show up if the compilation is created, because the compilation created for a project is (apparently) created with `metadataImportOptions: MetadataImportOptions.All` not being the value (seems like the default is `MetadataImportOptions.Public`). That's a problem. There might be a "trick" to create a compilation that sets the option for what we're looking for. Need to play with it, and even if this is a possibility, it would probably make things much slower - we'd only want to do it if we can tell the type symbol comes from an assembly that was not loaded with metadata (if it's a `PortableExecutableReference`, it won't work, but if it's a `CompilationReference` then it looks like it will).
+* Operators - is that a case SaferAccessors would even care about?
 * Explicit interface implementation - it looks like `CanBeReferencedByName` returns `false` for those, but ... we should be able to call them? Maybe? Needs more research.
 * ISSUE MADE - Method definitions - specifically, `in`, `out`, `ref`, `[Scoped]`, `ref` returns, `ref readonly` returns, what can be done here with `[UnsafeAccessor]` and what do I need to update

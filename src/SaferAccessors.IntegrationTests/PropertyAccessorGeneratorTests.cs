@@ -9,6 +9,11 @@ public class TestWithInstance
 	private int Id { get; set; }
 }
 
+public class TestWithMixedAccessibility
+{
+	public int Id { get; private set; }
+}
+
 public class TestWithInstance<T>
 {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
@@ -49,6 +54,14 @@ internal static class FieldAccessorGeneratorTest
 		{
 			Id = 22
 		};
+		Assert.That(test.Id, Is.EqualTo(22));
+	}
+
+	[Test]
+	public static void RoundtripWithMixedAccessibility()
+	{
+		var test = new TestWithMixedAccessibility();
+		TestWithMixedAccessibilityExtensions.set_Id(test, 22);
 		Assert.That(test.Id, Is.EqualTo(22));
 	}
 

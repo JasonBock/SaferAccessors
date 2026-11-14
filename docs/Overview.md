@@ -81,6 +81,10 @@ Enter SaferAccessors. This library holds a source generator that will examine a 
 
 # Usage
 
+We'll start with the basics of SaferAccessors setup. Then, we'll go through each members that SaferAccessors targets, and some of the subtle cases that you might run into.
+
+## Package Reference and Map Setup
+
 First, you need to reference the [NuGet package](https://www.nuget.org/packages/SaferAccessors) in your project. Next, you need to add an `assembly`-level attribute named `[UnsafeAccessorMap]` in your code, passing in the type that contains the members you want to expose:
 
 ```c#
@@ -92,11 +96,17 @@ public sealed class MethodContent
 }
 ```
 
-Now, you can call `Compute()` with one line of code:
+Keep in mind that SaferAccessors generates code that makes extensive usage of modern C# features, such as the [`extension` definition and "extension everything"](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/extension). As SaferAccessors is a source generator, it will update its generated code if the target type changes name of members. This means that if a private member is named `AAA()`, and the developer changes it to `BBB()`, SaferAccessors will change as well. This is discoverable at compile-time, **not** runtime. That's a big improvement.
+
+Let's see how different member types are handled in SaferAccessors.
+
+## Methods
+
+In the previous code snippet, you'll see that there's a `private Compute()` method. With SaferAccessors, you can call `Compute()` with one line of code:
 
 ```c#
 var content = new MethodContent();
-Console.WriteLine(content.Compute("Hello"));
+Console.WriteLine(content.Compute("Hello")); // prints "5"
 ```
 
 SaferAccessors generates code that looks something like this:
@@ -112,14 +122,12 @@ public static class MethodContentExtensions
 }
 ```
 
-If `Compute` was renamed to `Calculate`, the generated code would change as well. This means that the code that's using the `Compute()` extension method will no longer work, but that's discoverable at compile-time, **not** runtime. That's a big improvement.
-
 Also, SaferAccessors takes advantage of the `extension` definition such that non-public static members look like they exist on the type:
 
 ```c#
 [assembly: UnsafeAccessorMap(typeof(TestWithStatic))]
 
-Console.WriteLine(TestWithStatic.GetValue("Key"));
+Console.WriteLine(TestWithStatic.GetValue("Key")); // prints "3"
 
 public class TestWithStatic
 {
@@ -148,7 +156,9 @@ public static class TestWithStaticExtensions
 
 This may look a little weird because even a `static` member needs the first parameter to be of the target type, but since it's `static`, you can pass in `null`. The generator creates the necessary redirect so the extension member is `static`, but the `extern` requirements are satisfied.
 
-Extension methods have existed since C# 3.0, but with C# 14, more members have been added for extension - namely, properties and operators. We can use that to handle properties and fields in a way that looks like normal C# code. For example, here's how a property works:
+## Properties
+
+Extension methods have existed since C# 3.0, but with C# 14, more members have been added for extension, such as properties. We can use that to handle properties in a way that looks like normal C# code. For example, here's how a property works:
 
 ```c#
 [assembly: UnsafeAccessorMap(typeof(PropertyContent))]
@@ -159,7 +169,7 @@ var content = new PropertyContent
   Value = 20
 };
 
-Console.WriteLine(content.Id + content.Value);
+Console.WriteLine(content.Id + content.Value); // prints "30"
 
 public sealed class PropertyContent
 {
@@ -205,7 +215,30 @@ public static class PropertyContentExtensions
 }
 ```
 
+> NOTE: C# 15 adds support for extension indexers. This will be added in SaferAccessors for the `1.0.0` release.
+
+One oddity with properties is when the `get` and `set` accessibilities are different. In this case, you need to call the `get_` or `set_` methods that are created by the `extension`:
+
+```c#
+[assembly: UnsafeAccessorMap(typeof(TestWithMixedAccessibility))]
+
+var test = new TestWithMixedAccessibility();
+TestWithMixedAccessibilityExtensions.set_Id(test, 22);
+Console.WriteLine(test.Id); // prints "22"
+
+public class TestWithMixedAccessibility
+{
+	public int Id { get; private set; }
+}
+```
+
+This is a consequence of `extension` and not due to `[UnsafeAccessor]`.
+
+## Fields
+
 Fields are handled like properties, so the syntax will look the same. If the field is declared as `readonly`, only a `get` accessor will be generated.
+
+## Constructors
 
 Constructors are also supported in SaferAccessors. There is no "extension constructor" feature yet in C#, so SaferAccessors will generate a `New()` static extension method for the targeted type:
 
@@ -213,7 +246,7 @@ Constructors are also supported in SaferAccessors. There is no "extension constr
 [assembly: UnsafeAccessorMap(typeof(ConstructorContent))]
 
 var content = ConstructorContent.New("Hello");
-Console.WriteLine(content.Value);
+Console.WriteLine(content.Value); // prints "Hello"
 
 public sealed class ConstructorContent
 {
@@ -225,8 +258,6 @@ public sealed class ConstructorContent
 ```
 
 If extension constructors are ever added, the assumption is that it would such that it would end up looking like `new ConstructorContent(...)`. SaferAccessors would be updated accordingly, and it would be fairly trivial to update existing code to use the new syntax.
-
-> NOTE: In C# 15, extension indexers will be added. Once that language version is officially released in mid-November 2026, indexers will be supported in SaferAccessors.
 
 # Performance
 
