@@ -207,10 +207,10 @@ ISSUE TODO:
         * DONE - Instance
         * DONE - Static on instance
         * DONE - Static on static
-    * Fields
-        * Instance
-        * Static on instance
-        * Static on static
+    * DONE - Fields
+        * DONE - Instance
+        * DONE - Static on instance
+        * DONE - Static on static
     * Constructors
 * Handle types and methods that have constraints
 * Properties with a public getter but private setter, need to handle that.
