@@ -86,6 +86,11 @@ internal sealed class AccessorBuilder
 				""");
 			indentWriter.Indent++;
 
+			foreach (var field in this.Model.Fields)
+			{
+				FieldAccessorBuilder.BuildGenericAccessor(indentWriter, field, extensionTargets);
+			}
+
 			foreach (var method in this.Model.Methods)
 			{
 				MethodAccessorBuilder.BuildGenericAccessor(indentWriter, method, extensionTargets);

@@ -203,10 +203,10 @@ ISSUE TODO:
                 * DONE - Instance
                 * DONE - Static on instance
                 * DONE - Static on static
-    * Properties
+    * DONE - Properties
         * DONE - Instance
         * DONE - Static on instance
-        * Static on static
+        * DONE - Static on static
     * Fields
         * Instance
         * Static on instance

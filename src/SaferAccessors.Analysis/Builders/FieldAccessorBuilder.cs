@@ -10,87 +10,169 @@ internal static class FieldAccessorBuilder
 	{
 		if (field.IsStatic)
 		{
-			if (field.IsReadOnly)
+			if (type.IsGeneric)
 			{
-				indentWriter.WriteLines(
-					$$"""
-					extension({{type.FullyQualifiedName}})
-					{
-						public static {{field.Type.FullyQualifiedName}} {{field.Name}}
+				if (field.IsReadOnly)
+				{
+					indentWriter.WriteLines(
+						$$"""
+						extension<{{type.TypeParameterNames}}>({{type.FullyQualifiedName}})
 						{
-							get => {{type.Name}}Accessors.{{field.Name}}((null as {{extensionTargets.SelfTargeting}})!);
+							public static {{field.Type.FullyQualifiedName}} {{field.Name}}
+							{
+								get => {{type.Name}}Accessors<{{type.TypeParameterNames}}>.{{field.Name}}((null as {{extensionTargets.SelfTargeting}})!);
+							}
 						}
-					}
 
-					""");
+						""");
+				}
+				else
+				{
+					indentWriter.WriteLines(
+						$$"""
+						extension<{{type.TypeParameterNames}}>({{type.FullyQualifiedName}})
+						{
+							public static {{field.Type.FullyQualifiedName}} {{field.Name}}
+							{
+								get => {{type.Name}}Accessors<{{type.TypeParameterNames}}>.{{field.Name}}((null as {{extensionTargets.SelfTargeting}})!);
+								set => {{type.Name}}Accessors<{{type.TypeParameterNames}}>.{{field.Name}}((null as {{extensionTargets.SelfTargeting}})!) = value;
+							}
+						}
+
+						""");
+				}
 			}
 			else
 			{
+				if (field.IsReadOnly)
+				{
+					indentWriter.WriteLines(
+						$$"""
+						extension({{type.FullyQualifiedName}})
+						{
+							public static {{field.Type.FullyQualifiedName}} {{field.Name}}
+							{
+								get => {{type.Name}}Accessors.{{field.Name}}((null as {{extensionTargets.SelfTargeting}})!);
+							}
+						}
+
+						""");
+				}
+				else
+				{
+					indentWriter.WriteLines(
+						$$"""
+						extension({{type.FullyQualifiedName}})
+						{
+							public static {{field.Type.FullyQualifiedName}} {{field.Name}}
+							{
+								get => {{type.Name}}Accessors.{{field.Name}}((null as {{extensionTargets.SelfTargeting}})!);
+								set => {{type.Name}}Accessors.{{field.Name}}((null as {{extensionTargets.SelfTargeting}})!) = value;
+							}
+						}
+
+						""");
+				}
+
 				indentWriter.WriteLines(
 					$$"""
-					extension({{type.FullyQualifiedName}})
+					private static partial class {{type.Name}}Accessors
 					{
-						public static {{field.Type.FullyQualifiedName}} {{field.Name}}
-						{
-							get => {{type.Name}}Accessors.{{field.Name}}((null as {{extensionTargets.SelfTargeting}})!);
-							set => {{type.Name}}Accessors.{{field.Name}}((null as {{extensionTargets.SelfTargeting}})!) = value;
-						}
+						[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticField, Name = "{{field.Name}}")]
+						public static extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}({{extensionTargets.SelfReference}});
 					}
 
 					""");
 			}
-
-			indentWriter.WriteLines(
-				$$"""
-				private static partial class {{type.Name}}Accessors
-				{
-					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticField, Name = "{{field.Name}}")]
-					public static extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}({{extensionTargets.SelfReference}});
-				}
-
-				""");
 		}
 		else
 		{
-			if (field.IsReadOnly)
+			if (type.IsGeneric)
 			{
-				indentWriter.WriteLines(
-					$$"""
-					extension({{type.FullyQualifiedName}} self)
-					{
-						public {{field.Type.FullyQualifiedName}} {{field.Name}}
+				if (field.IsReadOnly)
+				{
+					indentWriter.WriteLines(
+						$$"""
+						extension<{{type.TypeParameterNames}}>({{type.FullyQualifiedName}} self)
 						{
-							get => {{type.Name}}Accessors.{{field.Name}}(self);
+							public {{field.Type.FullyQualifiedName}} {{field.Name}}
+							{
+								get => {{type.Name}}Accessors<{{type.TypeParameterNames}}>.{{field.Name}}(self);
+							}
 						}
-					}
 
-					""");
+						""");
+				}
+				else
+				{
+					indentWriter.WriteLines(
+						$$"""
+						extension<{{type.TypeParameterNames}}>({{type.FullyQualifiedName}} self)
+						{
+							public {{field.Type.FullyQualifiedName}} {{field.Name}}
+							{
+								get => {{type.Name}}Accessors<{{type.TypeParameterNames}}>.{{field.Name}}(self);
+								set => {{type.Name}}Accessors<{{type.TypeParameterNames}}>.{{field.Name}}(self) = value;
+							}
+						}
+
+						""");
+				}
 			}
 			else
 			{
+				if (field.IsReadOnly)
+				{
+					indentWriter.WriteLines(
+						$$"""
+						extension({{type.FullyQualifiedName}} self)
+						{
+							public {{field.Type.FullyQualifiedName}} {{field.Name}}
+							{
+								get => {{type.Name}}Accessors.{{field.Name}}(self);
+							}
+						}
+
+						""");
+				}
+				else
+				{
+					indentWriter.WriteLines(
+						$$"""
+						extension({{type.FullyQualifiedName}} self)
+						{
+							public {{field.Type.FullyQualifiedName}} {{field.Name}}
+							{
+								get => {{type.Name}}Accessors.{{field.Name}}(self);
+								set => {{type.Name}}Accessors.{{field.Name}}(self) = value;
+							}
+						}
+
+						""");
+				}
+
 				indentWriter.WriteLines(
 					$$"""
-					extension({{type.FullyQualifiedName}} self)
+					private static partial class {{type.Name}}Accessors
 					{
-						public {{field.Type.FullyQualifiedName}} {{field.Name}}
-						{
-							get => {{type.Name}}Accessors.{{field.Name}}(self);
-							set => {{type.Name}}Accessors.{{field.Name}}(self) = value;
-						}
+						[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
+						public static extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}({{extensionTargets.SelfReference}});
 					}
 
 					""");
 			}
-
-			indentWriter.WriteLines(
-				$$"""
-				private static partial class {{type.Name}}Accessors
-				{
-					[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = "{{field.Name}}")]
-					public static extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}({{extensionTargets.SelfReference}});
-				}
-
-				""");
 		}
+	}
+
+	internal static void BuildGenericAccessor(IndentedTextWriter indentWriter, FieldModel field, ExtensionTargets extensionTargets)
+	{
+		var accessorKind = field.IsStatic ? "StaticField" : "Field";
+
+		indentWriter.WriteLines(
+			$$"""
+			[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.{{accessorKind}}, Name = "{{field.Name}}")]
+			public static extern ref {{field.Type.FullyQualifiedName}} {{field.Name}}({{extensionTargets.SelfReference}});
+				
+			""");
 	}
 }
