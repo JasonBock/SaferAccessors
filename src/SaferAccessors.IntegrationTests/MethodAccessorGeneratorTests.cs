@@ -14,6 +14,12 @@ public class TestWithConstraintsOnMethod
 		key.ToString()!.Length;
 }
 
+public class TestWithConstraintsOnType<T> where T : struct
+{
+	private int GetValue(T key) =>
+		key.ToString()!.Length;
+}
+
 public class TestWithInstance<T>
 {
 	private int GetValue(T key) => key?.ToString()!.Length ?? 0;
@@ -63,6 +69,13 @@ internal static class MethodAccessorGeneratorTest
 	public static void InvokeWithConstraintsOnMethod()
 	{
 		var test = new TestWithConstraintsOnMethod();
+		Assert.That(test.GetValue(Guid.NewGuid()), Is.EqualTo(36));
+	}
+
+	[Test]
+	public static void InvokeWithConstraintsOnType()
+	{
+		var test = new TestWithConstraintsOnType<Guid>();
 		Assert.That(test.GetValue(Guid.NewGuid()), Is.EqualTo(36));
 	}
 

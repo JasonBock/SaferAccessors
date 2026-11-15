@@ -79,9 +79,14 @@ internal sealed class AccessorBuilder
 
 		if (type.IsGeneric)
 		{
+			var typeConstraints =
+				type.Constraints.Length > 0 ?
+					$" {string.Join(" ", type.Constraints)}" :
+					"";
+
 			indentWriter.WriteLines(
 				$$"""
-				private static class {{type.Name}}Accessors<{{type.TypeParameterNames}}>
+				private static class {{type.Name}}Accessors<{{type.TypeParameterNames}}>{{typeConstraints}}
 				{
 				""");
 			indentWriter.Indent++;
