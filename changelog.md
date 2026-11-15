@@ -9,4 +9,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Generics are supported (issue [#4](https://github.com/JasonBock/SaferAccessors/issues/4))
 * Properties, fields, non-generic methods, and constructors - both static and instance - are supported (issue [#1](https://github.com/JasonBock/SaferAccessors/issues/1))
