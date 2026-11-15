@@ -215,9 +215,9 @@ ISSUE TODO:
 * DONE - Properties with a public getter but private setter, need to handle that.
 * DONE - Overview doc
     * DONE - Break out `#Usage` section to how it works for referencing the NuGet package, and then examples for each section, calling out "oddities" like `New()` for constructors and mixed accessibility for properties
+* DONE - .NET 11/`latest` LangVersion
 * Handle types and methods that have constraints
 * What should we do when we don't have any targets? Generate an empty static class? Skip it? Document what happens either way.
-* .NET 11/`latest` LangVersion
 
 
 FUTURE TODO:

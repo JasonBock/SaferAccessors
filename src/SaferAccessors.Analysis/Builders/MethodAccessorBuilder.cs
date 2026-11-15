@@ -15,15 +15,24 @@ internal static class MethodAccessorBuilder
 			$"<{method.TypeParameterNames}>" :
 			null;
 
+		var typeConstraints =
+			type.Constraints.Length > 0 ?
+				$" {string.Join(" ", type.Constraints)}" :
+				"";
+		var methodConstraints =
+			method.Constraints.Length > 0 ?
+				$" {string.Join(" ", method.Constraints)}" :
+				"";
+
 		if (method.IsStatic)
 		{
 			if (type.IsGeneric)
 			{
 				indentWriter.WriteLines(
 					$$"""
-					extension<{{type.TypeParameterNames}}>({{type.FullyQualifiedName}})
+					extension<{{type.TypeParameterNames}}>({{type.FullyQualifiedName}}){{typeConstraints}}
 					{
-						public static {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{parameters}}) =>
+						public static {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{parameters}}){{methodConstraints}} =>
 							{{type.Name}}Accessors<{{type.TypeParameterNames}}>.{{method.Name}}{{methodTypeParameterNames}}((null as {{extensionTargets.SelfTargeting}})!, {{parameterNames}});
 					}
 
@@ -35,14 +44,14 @@ internal static class MethodAccessorBuilder
 					$$"""
 					extension({{type.FullyQualifiedName}})
 					{
-						public static {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{parameters}}) =>
+						public static {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{parameters}}){{methodConstraints}} =>
 							{{type.Name}}Accessors.{{method.Name}}{{methodTypeParameterNames}}((null as {{extensionTargets.SelfTargeting}})!, {{parameterNames}});
 					}
 
 					private static partial class {{type.Name}}Accessors
 					{
 						[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.StaticMethod, Name = "{{method.Name}}")]
-						public static extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{extensionTargets.SelfReference}}, {{parameters}});
+						public static extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{extensionTargets.SelfReference}}, {{parameters}}){{methodConstraints}};
 					}
 
 					""");
@@ -54,9 +63,9 @@ internal static class MethodAccessorBuilder
 			{
 				indentWriter.WriteLines(
 					$$"""
-					extension<{{type.TypeParameterNames}}>({{extensionTargets.SelfReference}})
+					extension<{{type.TypeParameterNames}}>({{extensionTargets.SelfReference}}){{typeConstraints}}
 					{
-						public {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{parameters}}) =>
+						public {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{parameters}}){{methodConstraints}} =>
 							{{type.Name}}Accessors<{{type.TypeParameterNames}}>.{{method.Name}}{{methodTypeParameterNames}}(self, {{parameterNames}});
 					}
 
@@ -69,7 +78,7 @@ internal static class MethodAccessorBuilder
 					extension({{extensionTargets.SelfReference}})
 					{
 						[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Method, Name = "{{method.Name}}")]
-						public extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{parameters}});
+						public extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{parameters}}){{methodConstraints}};
 					}
 				
 					""");
@@ -86,11 +95,16 @@ internal static class MethodAccessorBuilder
 			$"<{method.TypeParameterNames}>" :
 			null;
 
+		var methodConstraints =
+			method.Constraints.Length > 0 ?
+				$" {string.Join(" ", method.Constraints)}" :
+				"";
+
 		indentWriter.WriteLines(
 			$$"""
 			[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.{{accessorKind}}, Name = "{{method.Name}}")]
-			public static extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{extensionTargets.SelfReference}}, {{parameters}});
-				
+			public static extern {{method.ReturnType.FullyQualifiedName}} {{method.Name}}{{methodTypeParameterNames}}({{extensionTargets.SelfReference}}, {{parameters}}){{methodConstraints}};
+
 			""");
 	}
 }

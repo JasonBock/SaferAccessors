@@ -8,6 +8,12 @@ public class TestWithInstance
 	private int Compute<T>(T value) => value?.ToString()!.Length ?? 0;
 }
 
+public class TestWithConstraintsOnMethod
+{
+	private int GetValue<T>(T key) where T : struct => 
+		key.ToString()!.Length;
+}
+
 public class TestWithInstance<T>
 {
 	private int GetValue(T key) => key?.ToString()!.Length ?? 0;
@@ -51,6 +57,13 @@ internal static class MethodAccessorGeneratorTest
 	{
 		var test = new TestWithInstance();
 		Assert.That(test.GetValue("333"), Is.EqualTo(3));
+	}
+
+	[Test]
+	public static void InvokeWithConstraintsOnMethod()
+	{
+		var test = new TestWithConstraintsOnMethod();
+		Assert.That(test.GetValue(Guid.NewGuid()), Is.EqualTo(36));
 	}
 
 	[Test]

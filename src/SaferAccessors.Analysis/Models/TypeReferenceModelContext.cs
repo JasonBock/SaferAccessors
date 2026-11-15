@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using SaferAccessors.Analysis.Extensions;
 using SaferAccessors.Extensions;
 
 namespace SaferAccessors.Analysis.Models;
@@ -45,6 +46,7 @@ internal sealed class TypeReferenceModelContext
 
 			if (type is INamedTypeSymbol namedTypeSymbol)
 			{
+				this.Constraints = namedTypeSymbol.GetConstraints(modelContext.SemanticModel.Compilation);
 				this.IsGeneric = namedTypeSymbol.IsGenericType;
 				this.TypeParameters = [.. namedTypeSymbol.TypeParameters.Select(_ => modelContext.CreateTypeReference(_))];
 				this.TypeParameterNames = string.Join(", ", namedTypeSymbol.TypeParameters.Select(parameter => parameter.Name));
@@ -64,6 +66,7 @@ internal sealed class TypeReferenceModelContext
 
 		public override string ToString() => this.FullyQualifiedName;
 
+		public EquatableArray<Constraints> Constraints { get; }
 		public string FullyQualifiedName { get; }
 		public bool IsGeneric { get; }
 		public bool IsStatic { get; }
