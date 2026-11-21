@@ -10,6 +10,23 @@ internal static class ITypeSymbolExtensions
 		internal string GetName() =>
 			self.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
 
+		internal string GetMetadataName()
+		{
+			var namespaces = new List<string>();
+
+			var containingNamespace = self.ContainingNamespace;
+
+			if (containingNamespace is not null &&
+				!containingNamespace.IsGlobalNamespace)
+			{
+				namespaces.Add(containingNamespace.ToDisplayString());
+			}
+
+			namespaces.Add(self.MetadataName);
+
+			return string.Join(".", namespaces);
+		}
+
 		internal string GetFullyQualifiedName(Compilation compilation, bool includeNullableAnnotation = true)
 		{
 			const string GlobalPrefix = "global::";
@@ -63,8 +80,8 @@ internal static class ITypeSymbolExtensions
 				{ TypeKind: TypeKind.TypeParameter } => true,
 				INamedTypeSymbol namedType => namedType.HasOpenGenerics(),
 				_ => false
-			}; 
-			
+			};
+
 		internal bool IsPointer() =>
 			self.Kind == SymbolKind.PointerType || self.Kind == SymbolKind.FunctionPointerType;
 	}

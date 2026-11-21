@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using SaferAccessors.Analysis.Builders;
 using SaferAccessors.Analysis.Models;
+using SaferAccessors.Extensions;
 using System.Collections.Immutable;
 
 namespace SaferAccessors.Analysis;
@@ -17,10 +18,24 @@ internal sealed class SaferAccessorsGenerator
 				{
 					var models = new List<AccessorModel>(context.Attributes.Length);
 					var typeReferenceModelContext = new TypeReferenceModelContext(context.SemanticModel);
+					Compilation? allCompilation = null;
 
 					foreach (var attribute in context.Attributes)
 					{
 						var targetType = (attribute.ConstructorArguments[0].Value as ITypeSymbol)!;
+
+						if (targetType.ContainingAssembly.Locations.Any(location => location.Kind == LocationKind.MetadataFile))
+						{
+							allCompilation ??= context.SemanticModel.Compilation.WithOptions(
+								context.SemanticModel.Compilation.Options.WithMetadataImportOptions(MetadataImportOptions.All));
+
+							var allTargetType = allCompilation.GetTypeByMetadataName(targetType.GetMetadataName());
+
+							if (allTargetType is not null)
+							{
+								targetType = allTargetType;
+							}
+						}
 
 						// We should only see an unbound generic type with the "typeof(...)" case,
 						// but using "typeof(IService)" won't give an unbound generic, so
